@@ -1,18 +1,44 @@
 @extends('layouts.app')
 
-@section('title', 'Deeds')
+@section('title', 'All Deeds')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3>Deeds for Index #{{ $index->id }}</h3>
-        <p class="text-muted">{{ $index->state->name }} / {{ $index->district->name }} / {{ $index->office->office_name }}</p>
+        <h3>All Deeds</h3>
+        <p class="text-muted mb-0">Browse all deeds across indexes and filter the list as needed.</p>
     </div>
-    <a href="{{ route('indexes.deeds.create', $index) }}" class="btn btn-primary">Add Deed</a>
 </div>
 
 <div class="card p-3 mb-4">
-    <form method="GET" action="{{ route('indexes.deeds.index', $index) }}" class="row g-3 align-items-end">
+    <form method="GET" action="{{ route('deeds.index') }}" class="row g-3 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label">State</label>
+            <select name="state_id" class="form-select">
+                <option value="">All states</option>
+                @foreach($states as $state)
+                    <option value="{{ $state->id }}" {{ (string) $stateId === (string) $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">District</label>
+            <select name="district_id" class="form-select">
+                <option value="">All districts</option>
+                @foreach($districts as $district)
+                    <option value="{{ $district->id }}" {{ (string) $districtId === (string) $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Office</label>
+            <select name="office_id" class="form-select">
+                <option value="">All offices</option>
+                @foreach($offices as $office)
+                    <option value="{{ $office->id }}" {{ (string) $officeId === (string) $office->id ? 'selected' : '' }}>{{ $office->office_name }}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="col-md-3">
             <label class="form-label">Status</label>
             <select name="status" class="form-select">
@@ -23,8 +49,20 @@
             </select>
         </div>
         <div class="col-md-3">
+            <label class="form-label">Volume Year</label>
+            <input type="text" name="volume_year" class="form-control" value="{{ $volumeYear }}" placeholder="Filter year">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Book</label>
+            <input type="text" name="book_number" class="form-control" value="{{ $bookNumber }}" placeholder="Filter book">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Volume</label>
+            <input type="text" name="volume_number" class="form-control" value="{{ $volumeNumber }}" placeholder="Filter volume">
+        </div>
+        <div class="col-md-3">
             <label class="form-label">Presentation Year</label>
-            <input type="text" name="presentation_year" class="form-control" value="{{ $presentationYear }}" placeholder="Filter year">
+            <input type="text" name="presentation_year" class="form-control" value="{{ $presentationYear }}" placeholder="Filter deed year">
         </div>
         <div class="col-md-3">
             <label class="form-label">Deed Number</label>
@@ -54,41 +92,83 @@
             No deeds match the selected filters.
         </div>
     @else
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Presentation Year</th>
-                    <th>Deed Number</th>
-                    <th>Party Name</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($deeds as $deed)
+        <div class="table-responsive">
+            <table class="table table-striped align-middle mb-0">
+                <thead>
                     <tr>
-                        <td>{{ $deed->presentation_year }}</td>
-                        <td>{{ $deed->deed_number }}</td>
-                        <td>{{ $deed->party_name }}</td>
-                        <td>{{ ucfirst($deed->status) }}</td>
-                        <td>
-                            @if($deed->scannedDocuments->isNotEmpty())
-                                @php $doc = $deed->scannedDocuments->last(); @endphp
-                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary me-1">View PDF</a>
-                                <a href="{{ route('deeds.download', $deed) }}" class="btn btn-sm btn-outline-success me-1">Download</a>
-                            @endif
-                            <a href="{{ route('indexes.deeds.edit', [$index, $deed]) }}" class="btn btn-sm btn-secondary">Edit</a>
-                            <a href="{{ route('deeds.metadata.create', $deed) }}" class="btn btn-sm btn-info">Metadata</a>
-                            <form method="POST" action="{{ route('indexes.deeds.destroy', [$index, $deed]) }}" class="d-inline-block" onsubmit="return confirm('Delete this deed?');">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </td>
+                        <th>State</th>
+                        <th>District</th>
+                        <th>Office</th>
+                        <th>Volume Year</th>
+                        <th>Book</th>
+                        <th>Volume</th>
+                        <th>Presentation Year</th>
+                        <th>Deed Number</th>
+                        <th>Party Name</th>
+                        <th>Village</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach($deeds as $deed)
+                        @php $index = $deed->index; @endphp
+                        <tr>
+                            <td>{{ optional($index?->state)->name ?? '-' }}</td>
+                            <td>{{ optional($index?->district)->name ?? '-' }}</td>
+                            <td>{{ optional($index?->office)->office_name ?? '-' }}</td>
+                            <td>{{ $index?->volume_year ?? '-' }}</td>
+                            <td>{{ $index?->book_number ?? '-' }}</td>
+                            <td>{{ $index?->volume_number ?? '-' }}</td>
+                            <td>{{ $deed->presentation_year ?? '-' }}</td>
+                            <td>{{ $deed->deed_number ?? '-' }}</td>
+                            <td>{{ $deed->party_name ?? '-' }}</td>
+                            <td>{{ $deed->village ?? '-' }}</td>
+                            <td>{{ ucfirst($deed->status) }}</td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @if($deed->scannedDocuments->isNotEmpty())
+                                        @php $doc = $deed->scannedDocuments->last(); @endphp
+                                        <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary">View PDF</a>
+                                        <a href="{{ route('deeds.download', $deed) }}" class="btn btn-sm btn-outline-success">Download</a>
+                                    @endif
+
+                                    @php $user = auth()->user(); @endphp
+                                    @if($index)
+                                        @if($user && $user->isChecker())
+                                            <a href="{{ route('indexes.deeds.show', [$index, $deed]) }}" class="btn btn-sm btn-info">View</a>
+                                        @else
+                                            <a href="{{ route('indexes.deeds.edit', [$index, $deed]) }}" class="btn btn-sm btn-secondary">Edit</a>
+                                            <form method="POST" action="{{ route('indexes.deeds.destroy', [$index, $deed]) }}" class="d-inline-block" onsubmit="return confirm('Delete this deed?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        @endif
+                                    @else
+                                        <span class="badge bg-secondary">No index linked</span>
+                                    @endif
+
+                                    @if($deed->metadata)
+                                        @if($user && $user->isChecker())
+                                            <a href="{{ route('deeds.metadata.show', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-info">View Metadata</a>
+                                        @elseif($deed->metadata->status === 'approved')
+                                            <a href="{{ route('deeds.metadata.show', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-info">View Metadata</a>
+                                        @else
+                                            <a href="{{ route('deeds.metadata.edit', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-primary">Edit Metadata</a>
+                                        @endif
+                                    @else
+                                        @if($user && ($user->isOperator() || $user->isAdmin()))
+                                            <a href="{{ route('deeds.metadata.create', $deed) }}" class="btn btn-sm btn-info">Create Metadata</a>
+                                        @endif
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @endif
 </div>
 @endsection

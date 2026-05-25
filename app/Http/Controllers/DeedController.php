@@ -155,7 +155,7 @@ class DeedController extends Controller
         $districts = District::orderBy('name')->get();
         $offices = VaultRegistrationOffice::orderBy('office_name')->get();
 
-        return view('deeds.all', compact(
+        return view('deeds.index', compact(
             'deeds',
             'status',
             'stateId',
@@ -173,6 +173,29 @@ class DeedController extends Controller
             'districts',
             'offices'
         ));
+    }
+
+    public function show(Index $index, Deed $deed)
+    {
+        if ($redirect = $this->requireAuth()) {
+            return $redirect;
+        }
+
+        $deed->load(['scannedDocuments', 'metadata', 'index.state', 'index.district', 'index.office']);
+
+        return view('deeds.show', compact('index', 'deed'));
+    }
+
+    public function showGlobal(Deed $deed)
+    {
+        if ($redirect = $this->requireAuth()) {
+            return $redirect;
+        }
+
+        $deed->load(['scannedDocuments', 'metadata', 'index.state', 'index.district', 'index.office']);
+        $index = $deed->index;
+
+        return view('deeds.show', compact('index', 'deed'));
     }
 
     public function create(Index $index)
@@ -240,6 +263,11 @@ class DeedController extends Controller
             return $redirect;
         }
 
+        $user = auth()->user();
+        if ($user && $user->isChecker()) {
+            return redirect()->route('indexes.deeds.show', [$index, $deed]);
+        }
+
         return view('deeds.edit', compact('index', 'deed'));
     }
 
@@ -247,6 +275,11 @@ class DeedController extends Controller
     {
         if ($redirect = $this->requireAuth()) {
             return $redirect;
+        }
+
+        $user = auth()->user();
+        if (! $user || (! $user->isOperator() && ! $user->isAdmin())) {
+            return redirect()->route('indexes.deeds.show', [$index, $deed])->with('error', 'You do not have permission to update this deed.');
         }
 
         $data = $request->validate([
@@ -304,6 +337,11 @@ class DeedController extends Controller
     {
         if ($redirect = $this->requireAuth()) {
             return $redirect;
+        }
+
+        $user = auth()->user();
+        if (! $user || (! $user->isOperator() && ! $user->isAdmin())) {
+            return redirect()->route('indexes.deeds.show', [$index, $deed])->with('error', 'You do not have permission to delete this deed.');
         }
 
         $deed->delete();

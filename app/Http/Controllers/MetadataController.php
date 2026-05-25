@@ -155,13 +155,33 @@ class MetadataController extends Controller
             return $redirect;
         }
 
+        $user = auth()->user();
+        if ($user && $user->isChecker()) {
+            return redirect()->route('deeds.metadata.show', [$deed, $metadata]);
+        }
+
         return view('metadata.edit', compact('deed', 'metadata'));
+    }
+
+    public function show(Deed $deed, Metadata $metadata)
+    {
+        if ($redirect = $this->requireAuth()) {
+            return $redirect;
+        }
+
+        $metadata->load(['deed.index.state', 'deed.index.district', 'deed.index.office']);
+
+        return view('metadata.show', compact('deed', 'metadata'));
     }
 
     public function update(Request $request, Deed $deed, Metadata $metadata)
     {
         if ($redirect = $this->requireAuth()) {
             return $redirect;
+        }
+
+        if ($metadata->status === 'approved') {
+            return redirect()->route('metadata.index')->with('error', 'Cannot edit approved metadata.');
         }
 
         $data = $request->validate([
@@ -176,5 +196,19 @@ class MetadataController extends Controller
 
         $metadata->update($data);
         return redirect()->route('indexes.deeds.index', $deed->index)->with('status', 'Metadata updated successfully.');
+    }
+
+    public function destroy(Deed $deed, Metadata $metadata)
+    {
+        if ($redirect = $this->requireAuth()) {
+            return $redirect;
+        }
+
+        if ($metadata->status === 'approved') {
+            return redirect()->route('metadata.index')->with('error', 'Cannot delete approved metadata.');
+        }
+
+        $metadata->delete();
+        return redirect()->route('metadata.index')->with('status', 'Metadata deleted successfully.');
     }
 }

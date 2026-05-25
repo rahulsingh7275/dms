@@ -40,8 +40,7 @@ class Deed extends Model
         return $this->hasMany(ScannedDocument::class);
     }
 
-    public function metadata(): HasMany
-    {
-        return $this->hasMany(Metadata::class);
+    public function metadata() {
+        return $this->hasOne(Metadata::class);
     }
 }

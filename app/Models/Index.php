@@ -6,6 +6,7 @@ use App\Models\Deed;
 use App\Models\IndexVerification;
 use App\Models\QcVerification;
 use App\Models\VaultRegistrationOffice;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,7 @@ class Index extends Model
         'volume_number',
         'is_volume_forwarded',
         'status',
+        'status_comment',
         'locked',
         'created_by',
     ];
@@ -53,6 +55,11 @@ class Index extends Model
     public function deeds(): HasMany
     {
         return $this->hasMany(Deed::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function indexVerifications(): HasMany

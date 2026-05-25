@@ -123,7 +123,17 @@
                             <td>
                                 <div class="d-flex flex-wrap gap-2">
                                     @if($deed)
-                                        <a href="{{ route('deeds.metadata.edit', [$deed, $metadata]) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        @php $user = auth()->user(); @endphp
+                                        @if($metadata->status === 'approved' || ($user && $user->isChecker()))
+                                            <a href="{{ route('deeds.metadata.show', [$deed, $metadata]) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                                        @else
+                                            <a href="{{ route('deeds.metadata.edit', [$deed, $metadata]) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <form method="POST" action="{{ route('deeds.metadata.destroy', [$deed, $metadata]) }}" class="d-inline-block" onsubmit="return confirm('Delete this metadata?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        @endif
                                     @else
                                         <span class="badge bg-secondary">No deed linked</span>
                                     @endif
