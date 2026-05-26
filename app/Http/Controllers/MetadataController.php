@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Deed;
 use App\Models\District;
 use App\Models\Metadata;
+use App\Models\MetadataVerification;
 use App\Models\State;
 use App\Models\VaultRegistrationOffice;
 use Illuminate\Http\Request;
@@ -169,7 +170,7 @@ class MetadataController extends Controller
             return $redirect;
         }
 
-        $metadata->load(['deed.index.state', 'deed.index.district', 'deed.index.office']);
+        $metadata->load(['deed.index.state', 'deed.index.district', 'deed.index.office', 'verifications']);
 
         return view('metadata.show', compact('deed', 'metadata'));
     }
@@ -210,5 +211,44 @@ class MetadataController extends Controller
 
         $metadata->delete();
         return redirect()->route('metadata.index')->with('status', 'Metadata deleted successfully.');
+    }
+
+    public function updateStatus(Request $request, Deed $deed, Metadata $metadata)
+    {
+        if ($redirect = $this->requireAuth()) {
+            return $redirect;
+        }
+
+        $user = auth()->user();
+        if (! $user || ! $user->isChecker()) {
+            return redirect()->route('deeds.metadata.show', [$deed, $metadata])->with('error', 'You do not have permission to change metadata status.');
+        }
+
+        if (in_array($metadata->status, ['approved', 'rejected'])) {
+            return redirect()->route('deeds.metadata.show', [$deed, $metadata])->with('error', 'Status cannot be changed after approval or rejection.');
+        }
+
+        $data = $request->validate([
+            'status' => ['required', 'in:pending,approved,rejected'],
+            'comment' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        if ($data['status'] === 'rejected' && empty(trim($data['comment'] ?? ''))) {
+            return redirect()->route('deeds.metadata.show', [$deed, $metadata])->with('error', 'Please provide a comment when rejecting metadata.');
+        }
+
+        // Record verification in metadata_verifications table
+        MetadataVerification::create([
+            'metadata_id' => $metadata->id,
+            'checker_id' => auth()->id(),
+            'status' => $data['status'],
+            'remarks' => $data['comment'] ?? null,
+            'verified_at' => now(),
+        ]);
+
+        $metadata->status = $data['status'];
+        $metadata->save();
+
+        return redirect()->route('deeds.metadata.show', [$deed, $metadata])->with('status', 'Metadata status updated successfully.');
     }
 }

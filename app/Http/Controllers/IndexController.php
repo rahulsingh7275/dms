@@ -113,6 +113,11 @@ class IndexController extends Controller
             return redirect()->route('indexes.index')->with('error', 'Verified index cannot be edited.');
         }
 
+        // Prevent editing approved indexes
+        if ($index->status === 'approved') {
+            return redirect()->route('indexes.index')->with('error', 'Cannot edit an approved index.');
+        }
+
         $states = State::orderBy('name')->get();
         $districts = District::orderBy('name')->get();
         $offices = VaultRegistrationOffice::orderBy('office_name')->get();
@@ -128,6 +133,11 @@ class IndexController extends Controller
 
         if ($index->locked) {
             return redirect()->route('indexes.index')->with('error', 'Verified index cannot be updated.');
+        }
+
+        // Prevent updating approved indexes
+        if ($index->status === 'approved') {
+            return redirect()->route('indexes.index')->with('error', 'Cannot update an approved index.');
         }
 
         $data = $request->validate([
@@ -155,6 +165,11 @@ class IndexController extends Controller
             return redirect()->route('indexes.index')->with('error', 'Verified index cannot be deleted.');
         }
 
+        // Prevent deleting approved indexes
+        if ($index->status === 'approved') {
+            return redirect()->route('indexes.index')->with('error', 'Cannot delete an approved index.');
+        }
+
         $index->delete();
         return redirect()->route('indexes.index')->with('status', 'Index deleted successfully.');
     }
@@ -165,7 +180,7 @@ class IndexController extends Controller
             return $redirect;
         }
 
-        $index->load(['state', 'district', 'office', 'deeds.scannedDocuments', 'indexVerifications']);
+        $index->load(['state', 'district', 'office', 'deeds.scannedDocuments', 'deeds.deedVerifications', 'indexVerifications']);
         return view('indexes.show', compact('index'));
     }
 

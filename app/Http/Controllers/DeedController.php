@@ -8,6 +8,7 @@ use App\Models\Index;
 use App\Models\ScannedDocument;
 use App\Models\State;
 use App\Models\VaultRegistrationOffice;
+use App\Models\DeedVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,12 @@ class DeedController extends Controller
         }
 
         $status = trim((string) $request->input('status'));
+        $stateId = $request->input('state_id');
+        $districtId = $request->input('district_id');
+        $officeId = $request->input('office_id');
+        $volumeYear = trim((string) $request->input('volume_year'));
+        $bookNumber = trim((string) $request->input('book_number'));
+        $volumeNumber = trim((string) $request->input('volume_number'));
         $presentationYear = trim((string) $request->input('presentation_year'));
         $deedNumber = trim((string) $request->input('deed_number'));
         $partyName = trim((string) $request->input('party_name'));
@@ -55,16 +62,28 @@ class DeedController extends Controller
         }
 
         $deeds = $query->get();
+        $states = State::orderBy('name')->get();
+        $districts = District::orderBy('name')->get();
+        $offices = VaultRegistrationOffice::orderBy('office_name')->get();
 
         return view('deeds.index', compact(
             'index',
             'deeds',
             'status',
+            'stateId',
+            'districtId',
+            'officeId',
+            'volumeYear',
+            'bookNumber',
+            'volumeNumber',
             'presentationYear',
             'deedNumber',
             'partyName',
             'village',
-            'registrationDate'
+            'registrationDate',
+            'states',
+            'districts',
+            'offices'
         ));
     }
 
@@ -181,7 +200,7 @@ class DeedController extends Controller
             return $redirect;
         }
 
-        $deed->load(['scannedDocuments', 'metadata', 'index.state', 'index.district', 'index.office']);
+        $deed->load(['scannedDocuments', 'metadata', 'deedVerifications', 'index.state', 'index.district', 'index.office']);
 
         return view('deeds.show', compact('index', 'deed'));
     }
@@ -192,7 +211,7 @@ class DeedController extends Controller
             return $redirect;
         }
 
-        $deed->load(['scannedDocuments', 'metadata', 'index.state', 'index.district', 'index.office']);
+        $deed->load(['scannedDocuments', 'metadata', 'deedVerifications', 'index.state', 'index.district', 'index.office']);
         $index = $deed->index;
 
         return view('deeds.show', compact('index', 'deed'));
@@ -268,6 +287,11 @@ class DeedController extends Controller
             return redirect()->route('indexes.deeds.show', [$index, $deed]);
         }
 
+        // Prevent editing approved deeds
+        if ($deed->status === 'approved') {
+            return redirect()->route('indexes.deeds.show', [$index, $deed])->with('error', 'Cannot edit an approved deed.');
+        }
+
         return view('deeds.edit', compact('index', 'deed'));
     }
 
@@ -280,6 +304,11 @@ class DeedController extends Controller
         $user = auth()->user();
         if (! $user || (! $user->isOperator() && ! $user->isAdmin())) {
             return redirect()->route('indexes.deeds.show', [$index, $deed])->with('error', 'You do not have permission to update this deed.');
+        }
+
+        // Prevent updating approved deeds
+        if ($deed->status === 'approved') {
+            return redirect()->route('indexes.deeds.show', [$index, $deed])->with('error', 'Cannot update an approved deed.');
         }
 
         $data = $request->validate([
@@ -344,6 +373,11 @@ class DeedController extends Controller
             return redirect()->route('indexes.deeds.show', [$index, $deed])->with('error', 'You do not have permission to delete this deed.');
         }
 
+        // Prevent deleting approved deeds
+        if ($deed->status === 'approved') {
+            return redirect()->route('indexes.deeds.index', $index)->with('error', 'Cannot delete an approved deed.');
+        }
+
         $deed->delete();
         return redirect()->route('indexes.deeds.index', $index)->with('status', 'Deed removed successfully.');
     }
@@ -360,5 +394,44 @@ class DeedController extends Controller
         }
 
         return Storage::disk('public')->download($doc->file_path, $doc->file_name);
+    }
+
+    public function updateStatus(Request $request, Index $index, Deed $deed)
+    {
+        if ($redirect = $this->requireAuth()) {
+            return $redirect;
+        }
+
+        $user = auth()->user();
+        if (! $user || ! $user->isChecker()) {
+            return redirect()->route('indexes.show', $index)->with('error', 'You do not have permission to change deed status.');
+        }
+
+        if (in_array($deed->status, ['approved', 'rejected'])) {
+            return redirect()->route('indexes.show', $index)->with('error', 'Status cannot be changed after approval or rejection.');
+        }
+
+        $data = $request->validate([
+            'status' => ['required', 'in:pending,approved,rejected'],
+            'comment' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        if ($data['status'] === 'rejected' && empty(trim($data['comment'] ?? ''))) {
+            return redirect()->route('indexes.show', $index)->with('error', 'Please provide a comment when rejecting a deed.');
+        }
+
+        // Record verification in deed_verifications table
+        DeedVerification::create([
+            'deed_id' => $deed->id,
+            'checker_id' => auth()->id(),
+            'status' => $data['status'],
+            'remarks' => $data['comment'] ?? null,
+            'verified_at' => now(),
+        ]);
+
+        $deed->status = $data['status'];
+        $deed->save();
+
+        return redirect()->route('indexes.show', $index)->with('status', 'Deed status updated successfully.');
     }
 }

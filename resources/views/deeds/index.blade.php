@@ -8,6 +8,10 @@
         <h3>All Deeds</h3>
         <p class="text-muted mb-0">Browse all deeds across indexes and filter the list as needed.</p>
     </div>
+    @php $user = auth()->user(); @endphp
+    @if(isset($index) && $index && $user && $user->isOperator())
+        <a href="{{ route('indexes.deeds.create', $index) }}" class="btn btn-success">+ Add Deeds</a>
+    @endif
 </div>
 
 <div class="card p-3 mb-4">
@@ -136,6 +140,8 @@
                                     @php $user = auth()->user(); @endphp
                                     @if($index)
                                         @if($user && $user->isChecker())
+                                            <a href="{{ route('indexes.deeds.show', [$index, $deed]) }}" class="btn btn-sm btn-info">View</a>
+                                        @elseif($deed->status === 'approved')
                                             <a href="{{ route('indexes.deeds.show', [$index, $deed]) }}" class="btn btn-sm btn-info">View</a>
                                         @else
                                             <a href="{{ route('indexes.deeds.edit', [$index, $deed]) }}" class="btn btn-sm btn-secondary">Edit</a>
