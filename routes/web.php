@@ -47,6 +47,7 @@ Route::delete('indexes/{index}/deeds/{deed}', [DeedController::class, 'destroy']
 Route::get('deeds', [DeedController::class, 'all'])->name('deeds.index');
 Route::get('deeds/{deed}', [DeedController::class, 'showGlobal'])->name('deeds.show');
 Route::get('deeds/{deed}/download', [DeedController::class, 'download'])->name('deeds.download');
+Route::post('deeds/{deed}/scanned-copy', [DeedController::class, 'storeScannedCopy'])->name('deeds.scanned-copy.store');
 
 Route::get('metadata', [MetadataController::class, 'index'])->name('metadata.index');
 Route::get('deeds/{deed}/metadata/create', [MetadataController::class, 'create'])->name('deeds.metadata.create');

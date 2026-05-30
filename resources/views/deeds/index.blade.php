@@ -138,6 +138,19 @@
                                     @endif
 
                                     @php $user = auth()->user(); @endphp
+                                    @if($user && $user->isOperator() && $deed->status !== 'approved')
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-warning"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#scannedCopyModal"
+                                            data-deed-id="{{ $deed->id }}"
+                                            data-deed-number="{{ $deed->deed_number }}"
+                                        >
+                                            Upload Scanned Copy
+                                        </button>
+                                    @endif
+
                                     @if($index)
                                         @if($user && $user->isChecker())
                                             <a href="{{ route('indexes.deeds.show', [$index, $deed]) }}" class="btn btn-sm btn-info">View</a>
@@ -177,4 +190,50 @@
         </div>
     @endif
 </div>
+
+<!-- Upload scanned copy modal -->
+<div class="modal fade" id="scannedCopyModal" tabindex="-1" aria-labelledby="scannedCopyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scannedCopyModalLabel">Upload Scanned Copy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="scannedCopyForm" method="POST" action="" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <p id="scannedCopyDeedLabel" class="fw-semibold"></p>
+                    <div class="mb-3">
+                        <label class="form-label">Scanned Copy (PDF)</label>
+                        <input type="file" name="scanned_copy" class="form-control" accept="application/pdf" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var scannedCopyModal = document.getElementById('scannedCopyModal');
+        if (!scannedCopyModal) {
+            return;
+        }
+
+        scannedCopyModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var deedId = button.getAttribute('data-deed-id');
+            var deedNumber = button.getAttribute('data-deed-number');
+            var form = document.getElementById('scannedCopyForm');
+            var label = document.getElementById('scannedCopyDeedLabel');
+
+            form.action = '/deeds/' + deedId + '/scanned-copy';
+            label.textContent = 'Upload scanned PDF for deed #' + deedNumber;
+        });
+    });
+</script>
 @endsection

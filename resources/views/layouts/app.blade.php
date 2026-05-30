@@ -31,7 +31,7 @@
                 @auth
                     <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('indexes.index') }}">Indexes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('deeds.index') }}">Deeds</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('deeds.index') }}">Upload Scanned Copy</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('metadata.index') }}">Metadata</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('verifications.index') }}">Verifications</a></li>
                     @if(auth()->user()->isAdmin())
