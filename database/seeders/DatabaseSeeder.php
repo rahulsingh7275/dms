@@ -35,5 +35,19 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role_id' => $adminRole?->id,
         ]);
+        User::firstOrCreate([
+            'email' => 'operator@example.com',
+        ], [
+            'name' => 'Operator',
+            'password' => Hash::make('password'),
+            'role_id' => 2,
+        ]);
+        User::firstOrCreate([
+            'email' => 'checker@example.com',
+        ], [
+            'name' => 'checker',
+            'password' => Hash::make('password'),
+            'role_id' => 3,
+        ]);
     }
 }

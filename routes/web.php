@@ -37,20 +37,30 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 });
 
 Route::resource('indexes', IndexController::class)->except(['show']);
+Route::get('indexes/{index}', [IndexController::class, 'show'])->name('indexes.show');
+Route::post('indexes/{index}/status', [IndexController::class, 'updateStatus'])->name('indexes.status.update');
+Route::post('indexes/{index}/deeds/{deed}/status', [DeedController::class, 'updateStatus'])->name('indexes.deeds.status.update');
 
 Route::get('indexes/{index}/deeds', [DeedController::class, 'index'])->name('indexes.deeds.index');
 Route::get('indexes/{index}/deeds/create', [DeedController::class, 'create'])->name('indexes.deeds.create');
 Route::post('indexes/{index}/deeds', [DeedController::class, 'store'])->name('indexes.deeds.store');
+Route::get('indexes/{index}/deeds/{deed}', [DeedController::class, 'show'])->name('indexes.deeds.show');
 Route::get('indexes/{index}/deeds/{deed}/edit', [DeedController::class, 'edit'])->name('indexes.deeds.edit');
 Route::put('indexes/{index}/deeds/{deed}', [DeedController::class, 'update'])->name('indexes.deeds.update');
 Route::delete('indexes/{index}/deeds/{deed}', [DeedController::class, 'destroy'])->name('indexes.deeds.destroy');
-Route::get('deeds', [DeedController::class, 'all'])->name('deeds.index');Route::get('deeds/{deed}/download', [DeedController::class, 'download'])->name('deeds.download');
+Route::get('deeds', [DeedController::class, 'all'])->name('deeds.index');
+Route::get('deeds/{deed}', [DeedController::class, 'showGlobal'])->name('deeds.show');
+Route::get('deeds/{deed}/download', [DeedController::class, 'download'])->name('deeds.download');
+Route::post('deeds/{deed}/scanned-copy', [DeedController::class, 'storeScannedCopy'])->name('deeds.scanned-copy.store');
 
 Route::get('metadata', [MetadataController::class, 'index'])->name('metadata.index');
 Route::get('deeds/{deed}/metadata/create', [MetadataController::class, 'create'])->name('deeds.metadata.create');
 Route::post('deeds/{deed}/metadata', [MetadataController::class, 'store'])->name('deeds.metadata.store');
-Route::get('deeds/{deed}/metadata/{metadata}/edit', [MetadataController::class, 'edit'])->name('deeds.metadata.edit');
+Route::get('deeds/{deed}/metadata/{metadata}', [MetadataController::class, 'edit'])->name('deeds.metadata.edit');
+Route::get('deeds/{deed}/metadata/{metadata}/view', [MetadataController::class, 'show'])->name('deeds.metadata.show');
 Route::put('deeds/{deed}/metadata/{metadata}', [MetadataController::class, 'update'])->name('deeds.metadata.update');
+Route::delete('deeds/{deed}/metadata/{metadata}', [MetadataController::class, 'destroy'])->name('deeds.metadata.destroy');
+Route::post('deeds/{deed}/metadata/{metadata}/status', [MetadataController::class, 'updateStatus'])->name('deeds.metadata.status.update');
 
 Route::get('verifications', [VerificationController::class, 'indexVerifications'])->name('verifications.index');
 Route::post('verifications/index/{index}', [VerificationController::class, 'verifyIndex'])->name('verifications.index.verify');

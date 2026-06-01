@@ -5,7 +5,10 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3>Indexes</h3>
-    <a href="{{ route('indexes.create') }}" class="btn btn-primary">Add Index</a>
+    @php $user = auth()->user(); @endphp
+    @if($user && !$user->isChecker())
+        <a href="{{ route('indexes.create') }}" class="btn btn-primary">Add Index</a>
+    @endif
 </div>
 
 <div class="card p-3 mb-4">
@@ -94,13 +97,26 @@
                         <td>{{ $index->volume_number }}</td>
                         <td>{{ ucfirst($index->status) }}</td>
                         <td>
-                            <a href="{{ route('indexes.edit', $index) }}" class="btn btn-sm btn-secondary">Edit</a>
-                            <a href="{{ route('indexes.deeds.index', $index) }}" class="btn btn-sm btn-info">Deeds</a>
-                            <form method="POST" action="{{ route('indexes.destroy', $index) }}" class="d-inline-block" onsubmit="return confirm('Delete this index?');">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-sm btn-danger">Delete</button>
-                            </form>
+                            @php $user = auth()->user(); @endphp
+                            @if($user && ($user->isOperator() || $user->isAdmin()))
+                                @if($index->status !== 'approved')
+                                    <a href="{{ route('indexes.edit', $index) }}" class="btn btn-sm btn-secondary">Edit</a>
+                                    <form method="POST" action="{{ route('indexes.destroy', $index) }}" class="d-inline-block" onsubmit="return confirm('Delete this index?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                @else
+                                    <a href="{{ route('indexes.deeds.index', $index) }}" class="btn btn-sm btn-info">Deeds</a>
+                                @endif
+                            @elseif($user && $user->isChecker())
+                                <a href="{{ route('indexes.show', $index) }}" class="btn btn-sm btn-info">View</a>
+                            @else
+                                <a href="{{ route('indexes.edit', $index) }}" class="btn btn-sm btn-secondary">Edit</a>
+                                @if($index->status === 'approved')
+                                    <a href="{{ route('indexes.deeds.index', $index) }}" class="btn btn-sm btn-info">Deeds</a>
+                                @endif
+                            @endif
                         </td>
                     </tr>
                 @endforeach

@@ -20,50 +20,33 @@
     </div>
 
     <div class="row g-4 mb-4">
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body p-4">
-                    <h5 class="mb-3">Vault Office Details</h5>
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label text-muted mb-1">District</label>
-                            <div class="fw-semibold">{{ optional($index?->district)->name ?? '-' }}</div>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label text-muted mb-1">Office</label>
-                            <div class="fw-semibold">{{ optional($index?->office)->name ?? '-' }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
                     <h5 class="mb-3">Volume Details</h5>
                     <div class="row g-3">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label class="form-label text-muted mb-1">District</label>
                             <div class="fw-semibold">{{ optional($index?->district)->name ?? '-' }}</div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label class="form-label text-muted mb-1">Office</label>
                             <div class="fw-semibold">{{ optional($index?->office)->name ?? '-' }}</div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label class="form-label text-muted mb-1">Year</label>
                             <div class="fw-semibold">{{ $index?->volume_year ?? '-' }}</div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label class="form-label text-muted mb-1">Volume Forwarded</label>
                             <div class="fw-semibold">{{ $index?->is_volume_forwarded ? 'Yes' : 'No' }}</div>
                         </div>
-                        <div class="col-12">
+                        <div class="col-lg-6">
                             <label class="form-label text-muted mb-1">Reverted Remark by DSR</label>
                             <div class="border rounded p-3 bg-light text-muted">{{ $latestIndexVerification?->remarks ?? 'No reverted remark available.' }}</div>
                         </div>
-                        <div class="col-12">
+                        <div class="col-lg-6">
                             <label class="form-label text-muted mb-1">Reverted Remark by Checker</label>
                             <div class="border rounded p-3 bg-light text-muted">{{ $latestQcVerification?->remarks ?? 'No reverted remark available.' }}</div>
                         </div>

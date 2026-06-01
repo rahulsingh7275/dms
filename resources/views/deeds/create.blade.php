@@ -52,11 +52,6 @@
                 <input type="date" name="registration_date" class="form-control @error('registration_date') is-invalid @enderror" value="{{ old('registration_date') }}">
                 @error('registration_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
-            <div class="col-md-6">
-                <label class="form-label">Scanned Copy (PDF)</label>
-                <input type="file" name="scanned_copy" class="form-control @error('scanned_copy') is-invalid @enderror" accept="application/pdf">
-                @error('scanned_copy')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
         </div>
         <button type="submit" class="btn btn-primary mt-4">Save Deed</button>
     </form>

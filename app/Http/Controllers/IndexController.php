@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\District;
 use App\Models\Index;
+use App\Models\IndexVerification;
 use App\Models\State;
 use App\Models\VaultRegistrationOffice;
 use Illuminate\Http\Request;
@@ -112,6 +113,11 @@ class IndexController extends Controller
             return redirect()->route('indexes.index')->with('error', 'Verified index cannot be edited.');
         }
 
+        // Prevent editing approved indexes
+        if ($index->status === 'approved') {
+            return redirect()->route('indexes.index')->with('error', 'Cannot edit an approved index.');
+        }
+
         $states = State::orderBy('name')->get();
         $districts = District::orderBy('name')->get();
         $offices = VaultRegistrationOffice::orderBy('office_name')->get();
@@ -127,6 +133,11 @@ class IndexController extends Controller
 
         if ($index->locked) {
             return redirect()->route('indexes.index')->with('error', 'Verified index cannot be updated.');
+        }
+
+        // Prevent updating approved indexes
+        if ($index->status === 'approved') {
+            return redirect()->route('indexes.index')->with('error', 'Cannot update an approved index.');
         }
 
         $data = $request->validate([
@@ -154,7 +165,62 @@ class IndexController extends Controller
             return redirect()->route('indexes.index')->with('error', 'Verified index cannot be deleted.');
         }
 
+        // Prevent deleting approved indexes
+        if ($index->status === 'approved') {
+            return redirect()->route('indexes.index')->with('error', 'Cannot delete an approved index.');
+        }
+
         $index->delete();
         return redirect()->route('indexes.index')->with('status', 'Index deleted successfully.');
+    }
+
+    public function show(Index $index)
+    {
+        if ($redirect = $this->requireAuth()) {
+            return $redirect;
+        }
+
+        $index->load(['state', 'district', 'office', 'deeds.scannedDocuments', 'deeds.deedVerifications', 'indexVerifications']);
+        return view('indexes.show', compact('index'));
+    }
+
+    public function updateStatus(Request $request, Index $index)
+    {
+        if ($redirect = $this->requireAuth()) {
+            return $redirect;
+        }
+
+        $user = auth()->user();
+        if (! $user || ! $user->isChecker()) {
+            return redirect()->route('indexes.show', $index)->with('error', 'You do not have permission to change status.');
+        }
+
+        if (in_array($index->status, ['approved', 'rejected'])) {
+            return redirect()->route('indexes.show', $index)->with('error', 'Status cannot be changed after approval or rejection.');
+        }
+
+        $data = $request->validate([
+            'status' => ['required', 'in:pending,approved,rejected'],
+            'comment' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        if ($data['status'] === 'rejected' && empty(trim($data['comment'] ?? ''))) {
+            return redirect()->route('indexes.show', $index)->with('error', 'Please provide a comment when rejecting.');
+        }
+
+        // Record verification in index_verifications table instead of writing to a non-existing column
+        IndexVerification::create([
+            'index_id' => $index->id,
+            'checker_id' => auth()->id(),
+            'status' => $data['status'],
+            'remarks' => $data['comment'] ?? null,
+            'verified_at' => now(),
+        ]);
+
+        $index->status = $data['status'];
+        $index->locked = $data['status'] === 'approved';
+        $index->save();
+
+        return redirect()->route('indexes.show', $index)->with('status', 'Index status updated.');
     }
 }

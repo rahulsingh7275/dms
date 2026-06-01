@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Index;
 use App\Models\Metadata;
 use App\Models\ScannedDocument;
+use App\Models\DeedVerification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,8 +41,12 @@ class Deed extends Model
         return $this->hasMany(ScannedDocument::class);
     }
 
-    public function metadata(): HasMany
+    public function metadata() {
+        return $this->hasOne(Metadata::class);
+    }
+
+    public function deedVerifications(): HasMany
     {
-        return $this->hasMany(Metadata::class);
+        return $this->hasMany(DeedVerification::class);
     }
 }
