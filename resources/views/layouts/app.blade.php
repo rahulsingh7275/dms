@@ -1,93 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'DMS') }} - @yield('title')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@section('title') DSMNRU @show</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{asset('assets/admin/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/admin/css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+    <link href="{{asset('assets/admin/css/font-awesome.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/admin/css/style.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/admin/css/responsive.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/admin/css/bootstrap-select.css')}}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <style>
-        body {
-            background: #f8fafc;
+.eyebtn {
+            cursor: pointer;
         }
-        .navbar-brand {
-            font-weight: 700;
+
+        #loading-image {
+            background: rgb(217 214 214 / 30%);
+            position: fixed;
+            z-index: 999999999999999999;
+            height: 100%;
+            width: 100%;
+            top: 0px;
+            text-align: center;
         }
-        .card {
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+
+        #loading-image img {
+            width: 30%;
         }
-    </style>
+</style>
+    @yield('styles')
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="{{ route('home') }}">DMS</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
-                @auth
-                    <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('indexes.index') }}">Indexes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('deeds.index') }}">Upload Scanned Copy</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('metadata.index') }}">Metadata</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('verifications.index') }}">Verifications</a></li>
-                    @if(auth()->user()->isAdmin())
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Masters</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('states.index') }}">States</a></li>
-                                <li><a class="dropdown-item" href="{{ route('districts.index') }}">Districts</a></li>
-                                <li><a class="dropdown-item" href="{{ route('offices.index') }}">Vault Offices</a></li>
-                            </ul>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+
+        <aside class="main-sidebar sidebar-dark-primary">
+            <div class="navbg">
+                <img src="/assets/admin/img/navtopbg.svg" />
+            </div>
+
+            <div class="sidebar">
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard') }}" class="nav-link"><i class="iconly-boldCategory"></i>
+                                <p>Dashboard</p>
+                            </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">Users</a></li>
-                                <li><a class="dropdown-item" href="{{ route('admin.instruments.index') }}">Instruments</a></li>
-                                <li><a class="dropdown-item" href="{{ route('admin.instrument-types.index') }}">Instrument Types</a></li>
-                            </ul>
+                        <li class="nav-item">
+                            <a href="{{ route('indexes.index') }}" class="nav-link"><i class="iconly-boldCategory"></i>
+                                <p>Indexes</p>
+                            </a>
                         </li>
-                    @endif
-                @endauth
-            </ul>
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                @guest
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                @else
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ auth()->user()->name }}</a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><span class="dropdown-item-text">{{ auth()->user()->role?->label }}</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form action="{{ route('logout') }}" method="post" class="m-0">
-                                    @csrf
-                                    <button class="dropdown-item" type="submit">Logout</button>
+
+                    </ul>
+                </nav>
+
+            </div>
+
+        </aside>
+        <div class="content-wrapper">
+            <div class="content-header pb-0">
+                <div class="container-fluid mt-3">
+
+                    <div class="row mb-2">
+                        <div class="col-md-4 col-1">
+                            <a class="d-block d-md-none" data-widget="pushmenu" href="#" role="button"><img src="/assets/admin/img/menu-left-alt.svg" /></a>
+                            <a class="d-block d-sm-none d-md-block" href="#" role="button"><img src="/assets/admin/img/logo.png" /></a>
+                        </div>
+                        <div class="col-md-7 col-11 user-profile offset-md-1">
+                           
+                        
+                            <div class="float-right dropdown userData">
+                                <a data-toggle="dropdown" href="#" aria-expanded="true">
+
+                                   
+                                
+                                    <img src="/assets/admin/img/user.jpeg" class="img-circle mr-1" width="36" /> <img src="/assets/admin/img/dot.svg" class="float-none" />
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-md tableaction useraction-dropdown dropdown-menu-right" style="left: inherit; right: 0px;">
+                                    <ul>
+                                        <!-- <li><a href="{{'admin/profile'}}">My Profile</a></li> -->
+                                        <!-- <li><a href="#"  class="f-14" data-dismiss="modal" data-toggle="modal" data-target="#forgetpassword">Change Password</a></li> -->
+                                        <li><a href="/admin/logout">Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                   <div class="modal fade rightModal" id="forgetpassword" tabindex="-1" role="dialog" aria-labelledby="loginpopupTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-slideout" role="document">
+
+                            <div class="modal-content bg-light">
+							<form method="POST" class="needs-validation" action="{{ url('admin-password-change') }}" id="myform">
+                                        @csrf
+
+                                    <div class="modal-header pt-5 pl-5 pr-5 border-0">
+                                        <div class="pt-3 col-md-12">
+                                            <button type="button" class="close search-btn addaddressbtn" data-dismiss="modal" aria-label="Close">
+                                                <img src="/assets/admin/img/close.svg"/>
+                                            </button>
+                                            <div class="">
+                                                <h2>Password</h2>
+                                                <h5>Update</h5>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-body pt-3 pr-5 pl-5">
+
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                                <div class="form-label-group">
+												<label for="current_password">Current password</label>
+												
+                                                    <input type="password" id="current_password" name="current_password" class="form-control password" placeholder=" Enter Current Password" value="{{old('current_password')}}">
+													<a style="bottom: 10px;" onclick="show_password($(this));" class="eyebtn"><img src="{{asset('assets/admin/img/eye-inactive.svg')}}" /></a>
+													<div class="text-danger">{{$errors->first('current_password')}}</div>
+
+                                                </div>
+                                            </div>
+											<div class="col-md-12">
+                                                <div class="form-label-group">
+												<label for="password">New password</label>
+                                                    <input type="password" id="password" name="password" class="form-control password" placeholder="Enter New Password" value="{{old('password')}}"><a style="bottom: 10px;" onclick="show_password($(this));" class="eyebtn"><img src="{{asset('assets/admin/img/eye-inactive.svg')}}" /></a>
+													<div class="text-danger">{{$errors->first('password')}}</div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-label-group">
+												<label for="confirm_password">Re-type new password</label>
+                                                    <input type="password" id="confirm_password"  name="confirm_password" class="form-control password" placeholder=" Confirm New Password" value=""><a onclick="show_password($(this));" class="eyebtn" style="bottom: 30px;"><img src="{{asset('assets/admin/img/eye-inactive.svg')}}" /></a>
+													<div class="text-danger ">{{$errors->first('confirm_password')}}</div>
+													<span class="text-danger">Enter Min 8 Characters for Password</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 text-center mt-4">
+                                                <button type="submit" class="btn btn-secondary btn-radius">Update Password</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
                                 </form>
-                            </li>
-                        </ul>
-                    </li>
-                @endguest
-            </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            @yield('content')
+            
         </div>
-    </div>
-</nav>
 
-<main class="container mb-5">
-    @if(session('status'))
-        <div class="alert alert-success">{{ session('status') }}</div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-    @yield('content')
-</main>
+        @yield('form-model')
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- </div> -->
+
+
+<script src="/assets/admin/js/jquery.min.js"></script>
+<script src="/assets/admin/js/jquery-ui.min.js"></script>
+<script src="/assets/admin/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/admin/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/assets/admin/js/adminlte.js"></script>
+<script src="/assets/admin/js/bootstrap-select.js"></script>
+<script src="/assets/admin/js/custom-app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+@yield('scripts')
+ 
+ 
+</script>
+
 </body>
+
 </html>
