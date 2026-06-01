@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Deed;
 use App\Models\District;
+use App\Models\Instrument;
+use App\Models\InstrumentType;
 use App\Models\Metadata;
 use App\Models\State;
 use App\Models\VaultRegistrationOffice;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MetadataController extends Controller
 {
@@ -122,7 +125,10 @@ class MetadataController extends Controller
             return $redirect;
         }
 
-        return view('metadata.create', compact('deed'));
+        $instruments = Instrument::orderBy('name')->get();
+        $instrumentTypes = InstrumentType::orderBy('name')->get();
+
+        return view('metadata.create', compact('deed', 'instruments', 'instrumentTypes'));
     }
 
     public function store(Request $request, Deed $deed)
@@ -135,12 +141,38 @@ class MetadataController extends Controller
             'presentation_year' => ['required', 'string', 'max:20'],
             'deed_number' => ['required', 'string', 'max:100'],
             'party_name' => ['nullable', 'string', 'max:255'],
+            'party_type' => ['nullable', 'in:executant,claimant'],
+            'relation_name' => ['nullable', 'string', 'max:255'],
+            'district_id' => ['nullable', 'exists:districts,id'],
+            'vault_registration_office_id' => [
+                'nullable',
+                Rule::exists('vault_registration_offices', 'id')->where(function ($query) use ($request) {
+                    $districtId = $request->input('district_id');
+
+                    if ($districtId !== null && $districtId !== '') {
+                        $query->where('district_id', $districtId);
+                    }
+                }),
+            ],
+            'circle' => ['nullable', 'string', 'max:255'],
             'property_details' => ['nullable', 'string'],
             'village' => ['nullable', 'string', 'max:255'],
+            'khata_no' => ['nullable', 'string', 'max:100'],
+            'khasra_no' => ['nullable', 'string', 'max:100'],
             'area' => ['nullable', 'string', 'max:100'],
-            'registration_date' => ['nullable', 'date'],
+            'registration_date' => ['required', 'date'],
+            'presection_date' => ['required', 'date'],
+            'instrument_type_id' => ['required', 'exists:instruments,id'],
+            'instrument_sub_type_id' => [
+                'required',
+                Rule::exists('instrument_types', 'id')->where(function ($query) use ($request) {
+                    $query->where('instrument_id', $request->input('instrument_type_id'));
+                }),
+            ],
+            'page_no_from' => ['required', 'integer', 'min:1'],
+            'page_no_to' => ['required', 'integer', 'min:1', 'gte:page_no_from'],
         ]);
-        
+
         $deed->metadata()->create(array_merge($data, [
             'created_by' => auth()->id(),
             'status' => 'pending',
@@ -155,7 +187,12 @@ class MetadataController extends Controller
             return $redirect;
         }
 
-        return view('metadata.edit', compact('deed', 'metadata'));
+        $instruments = Instrument::orderBy('name')->get();
+        $instrumentTypes = InstrumentType::orderBy('name')->get();
+        $districts = District::orderBy('name')->get();
+        $offices = VaultRegistrationOffice::orderBy('office_name')->get();
+
+        return view('metadata.edit', compact('deed', 'metadata', 'instruments', 'instrumentTypes', 'districts', 'offices'));
     }
 
     public function update(Request $request, Deed $deed, Metadata $metadata)
@@ -168,13 +205,40 @@ class MetadataController extends Controller
             'presentation_year' => ['required', 'string', 'max:20'],
             'deed_number' => ['required', 'string', 'max:100'],
             'party_name' => ['nullable', 'string', 'max:255'],
+            'party_type' => ['nullable', 'in:executant,claimant'],
+            'relation_name' => ['nullable', 'string', 'max:255'],
+            'district_id' => ['nullable', 'exists:districts,id'],
+            'vault_registration_office_id' => [
+                'nullable',
+                Rule::exists('vault_registration_offices', 'id')->where(function ($query) use ($request) {
+                    $districtId = $request->input('district_id');
+
+                    if ($districtId !== null && $districtId !== '') {
+                        $query->where('district_id', $districtId);
+                    }
+                }),
+            ],
+            'circle' => ['nullable', 'string', 'max:255'],
             'property_details' => ['nullable', 'string'],
             'village' => ['nullable', 'string', 'max:255'],
+            'khata_no' => ['nullable', 'string', 'max:100'],
+            'khasra_no' => ['nullable', 'string', 'max:100'],
             'area' => ['nullable', 'string', 'max:100'],
-            'registration_date' => ['nullable', 'date'],
+            'registration_date' => ['required', 'date'],
+            'presection_date' => ['required', 'date'],
+            'instrument_type_id' => ['required', 'exists:instruments,id'],
+            'instrument_sub_type_id' => [
+                'required',
+                Rule::exists('instrument_types', 'id')->where(function ($query) use ($request) {
+                    $query->where('instrument_id', $request->input('instrument_type_id'));
+                }),
+            ],
+            'page_no_from' => ['required', 'integer', 'min:1'],
+            'page_no_to' => ['required', 'integer', 'min:1', 'gte:page_no_from'],
         ]);
 
         $metadata->update($data);
+
         return redirect()->route('indexes.deeds.index', $deed->index)->with('status', 'Metadata updated successfully.');
     }
 }

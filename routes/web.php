@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeedController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\InstrumentController;
+use App\Http\Controllers\InstrumentTypeController;
 use App\Http\Controllers\MetadataController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\DistrictController;
@@ -30,6 +32,8 @@ Route::resource('offices', VaultRegistrationOfficeController::class)->except(['s
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('users', UserController::class)->except(['show']);
+    Route::resource('instruments', InstrumentController::class)->except(['show']);
+    Route::resource('instrument-types', InstrumentTypeController::class)->except(['show']);
 });
 
 Route::resource('indexes', IndexController::class)->except(['show']);

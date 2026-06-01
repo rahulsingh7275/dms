@@ -43,7 +43,14 @@
                                 <li><a class="dropdown-item" href="{{ route('offices.index') }}">Vault Offices</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('admin.users.index') }}">Users</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">Users</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.instruments.index') }}">Instruments</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.instrument-types.index') }}">Instrument Types</a></li>
+                            </ul>
+                        </li>
                     @endif
                 @endauth
             </ul>
