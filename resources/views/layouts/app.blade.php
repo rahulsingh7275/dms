@@ -34,6 +34,22 @@
         #loading-image img {
             width: 30%;
         }
+        .sidebar-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            margin-right: 0.75rem;
+            cursor: pointer;
+        }
+        .sidebar-toggle-btn img {
+            width: 22px;
+            height: auto;
+        }
 </style>
     @yield('styles')
 </head>
@@ -54,15 +70,91 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                         <li class="nav-item">
-                            <a href="{{ route('dashboard') }}" class="nav-link"><i class="iconly-boldCategory"></i>
+                            <a href="{{ route('home') }}" class="nav-link">
+                                <i class="mdi mdi-home-outline"></i>
+                                <p>Home</p>
+                            </a>
+                        </li>
+                        @auth
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard') }}" class="nav-link">
+                                <i class="mdi mdi-view-dashboard-outline"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('indexes.index') }}" class="nav-link"><i class="iconly-boldCategory"></i>
+                            <a href="{{ route('indexes.index') }}" class="nav-link">
+                                <i class="mdi mdi-file-document-outline"></i>
                                 <p>Indexes</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('deeds.index') }}" class="nav-link">
+                                <i class="mdi mdi-file-upload"></i>
+                                <p>Upload Scanned Copy</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('metadata.index') }}" class="nav-link">
+                                <i class="mdi mdi-card-account-details-outline"></i>
+                                <p>Metadata</p>
+                            </a>
+                        </li>
+                        @if(auth()->user()->isAdmin())
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="mdi mdi-database"></i>
+                                <p>Masters<i class="fa fa-angle-left right"></i></p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: none;">
+                                <li class="nav-item">
+                                    <a href="{{ route('states.index') }}" class="nav-link">
+                                        <i class="mdi mdi-map-marker-radius"></i>
+                                        <p>States</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('districts.index') }}" class="nav-link">
+                                        <i class="mdi mdi-city"></i>
+                                        <p>Districts</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('offices.index') }}" class="nav-link">
+                                        <i class="mdi mdi-office-building"></i>
+                                        <p>Vault Offices</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="mdi mdi-account-group"></i>
+                                <p>Admin<i class="fa fa-angle-left right"></i></p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: none;">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.users.index') }}" class="nav-link">
+                                        <i class="mdi mdi-account-multiple-outline"></i>
+                                        <p>Users</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.instruments.index') }}" class="nav-link">
+                                        <i class="mdi mdi-book-open-page-variant"></i>
+                                        <p>Instruments</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.instrument-types.index') }}" class="nav-link">
+                                        <i class="mdi mdi-shape-outline"></i>
+                                        <p>Instrument Types</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
+                        @endauth
 
                     </ul>
                 </nav>
@@ -75,9 +167,12 @@
                 <div class="container-fluid mt-3">
 
                     <div class="row mb-2">
-                        <div class="col-md-4 col-1">
-                            <a class="d-block d-md-none" data-widget="pushmenu" href="#" role="button"><img src="/assets/admin/img/menu-left-alt.svg" /></a>
-                            <a class="d-block d-sm-none d-md-block" href="#" role="button"><img src="/assets/admin/img/logo.png" /></a>
+                        <div class="col-md-4 col-1 d-flex align-items-center">
+                            <a class="sidebar-toggle-btn d-none d-md-inline-flex" data-widget="pushmenu" href="#" role="button" aria-label="Toggle sidebar">
+                                <img src="/assets/admin/img/menu-left-alt.svg" alt="Toggle sidebar" />
+                            </a>
+                            <a class="d-block d-md-none" data-widget="pushmenu" href="#" role="button" aria-label="Toggle sidebar"><img src="/assets/admin/img/menu-left-alt.svg" alt="Toggle sidebar" /></a>
+                            <a class="d-block d-sm-none d-md-block" href="#" role="button"><img src="/assets/admin/img/logo.png" alt="Logo" /></a>
                         </div>
                         <div class="col-md-7 col-11 user-profile offset-md-1">
                            
@@ -85,7 +180,18 @@
                             <div class="float-right dropdown userData">
                                 <a data-toggle="dropdown" href="#" aria-expanded="true">
 
-                                   
+                                   @php $user = auth()->user(); @endphp
+                                   <p>User
+                                    @if($user?->isDepartmentHead())
+                                        <span>HOD</span>
+                                    @elseif($user?->isAdmin())
+                                        <span>Admin</span>
+                                    @elseif($user?->isOperator())
+                                        <span>Operator</span>
+                                    @else
+                                        <span>{{ ucfirst(str_replace('_', ' ', $user?->role?->name ?? 'User')) }}</span>
+                                    @endif
+                                   </p>
                                 
                                     <img src="/assets/admin/img/user.jpeg" class="img-circle mr-1" width="36" /> <img src="/assets/admin/img/dot.svg" class="float-none" />
                                 </a>
