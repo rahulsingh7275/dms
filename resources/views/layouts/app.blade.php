@@ -59,6 +59,7 @@
     <div class="wrapper">
 
 
+        @auth
         <aside class="main-sidebar sidebar-dark-primary">
             <div class="navbg">
                 <img src="/assets/admin/img/navtopbg.svg" />
@@ -75,7 +76,6 @@
                                 <p>Home</p>
                             </a>
                         </li>
-                        @auth
                         <li class="nav-item">
                             <a href="{{ route('dashboard') }}" class="nav-link">
                                 <i class="mdi mdi-view-dashboard-outline"></i>
@@ -154,7 +154,6 @@
                             </ul>
                         </li>
                         @endif
-                        @endauth
 
                     </ul>
                 </nav>
@@ -162,10 +161,13 @@
             </div>
 
         </aside>
+        @endauth
+
         <div class="content-wrapper">
             <div class="content-header pb-0">
                 <div class="container-fluid mt-3">
 
+                    @auth
                     <div class="row mb-2">
                         <div class="col-md-4 col-1 d-flex align-items-center">
                             <a class="sidebar-toggle-btn d-none d-md-inline-flex" data-widget="pushmenu" href="#" role="button" aria-label="Toggle sidebar">
@@ -175,8 +177,7 @@
                             <a class="d-block d-sm-none d-md-block" href="#" role="button"><img src="/assets/admin/img/logo.png" alt="Logo" /></a>
                         </div>
                         <div class="col-md-7 col-11 user-profile offset-md-1">
-                           
-                        
+
                             <div class="float-right dropdown userData">
                                 <a data-toggle="dropdown" href="#" aria-expanded="true">
 
@@ -192,14 +193,17 @@
                                         <span>{{ ucfirst(str_replace('_', ' ', $user?->role?->name ?? 'User')) }}</span>
                                     @endif
                                    </p>
-                                
+
                                     <img src="/assets/admin/img/user.jpeg" class="img-circle mr-1" width="36" /> <img src="/assets/admin/img/dot.svg" class="float-none" />
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-md tableaction useraction-dropdown dropdown-menu-right" style="left: inherit; right: 0px;">
                                     <ul>
-                                        <!-- <li><a href="{{'admin/profile'}}">My Profile</a></li> -->
-                                        <!-- <li><a href="#"  class="f-14" data-dismiss="modal" data-toggle="modal" data-target="#forgetpassword">Change Password</a></li> -->
-                                        <li><a href="/admin/logout">Logout</a></li>
+                                        <li>
+                                            <form action="{{ route('logout') }}" method="post" class="m-0">
+                                                @csrf
+                                                <button class="dropdown-item" type="submit">Logout</button>
+                                            </form>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -207,6 +211,7 @@
                         </div>
 
                     </div>
+                    @endauth
 
 
                    <div class="modal fade rightModal" id="forgetpassword" tabindex="-1" role="dialog" aria-labelledby="loginpopupTitle" aria-hidden="true">

@@ -100,23 +100,23 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Presentation Year</label>
-                                                <input type="text" name="presentation_year" class="form-control" value="{{ old('presentation_year') }}" required>
+                                                <input type="text" name="presentation_year" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('presentation_year') }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Deed Number</label>
-                                                <input type="text" name="deed_number" class="form-control" value="{{ old('deed_number') }}" required>
+                                                <input type="text" name="deed_number" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('deed_number') }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Presection Date</label>
-                                                <input type="date" name="presection_date" class="form-control" value="{{ old('presection_date') }}" required>
+                                                <input type="date" name="presection_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('presection_date') }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Registration Date</label>
-                                                <input type="date" name="registration_date" class="form-control" value="{{ old('registration_date') }}" required>
+                                                <input type="date" name="registration_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('registration_date') }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Instrument Type</label>
-                                                <select name="instrument_type_id" class="form-select" required>
+                                                <select name="instrument_type_id" class="form-control" style="border: 1px solid #c0c0c0;" required>
                                                     <option value="">Select Instrument Type</option>
                                                     @foreach($instruments as $instrument)
                                                         <option value="{{ $instrument->id }}" {{ old('instrument_type_id') == $instrument->id ? 'selected' : '' }}>{{ $instrument->name }}</option>
@@ -125,7 +125,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Instrument Sub Type</label>
-                                                <select name="instrument_sub_type_id" class="form-select" required>
+                                                <select name="instrument_sub_type_id" class="form-control" style="border: 1px solid #c0c0c0;" required>
                                                     <option value="">Select Instrument Sub Type</option>
                                                     @foreach($instrumentTypes as $instrumentType)
                                                         <option value="{{ $instrumentType->id }}" {{ old('instrument_sub_type_id') == $instrumentType->id ? 'selected' : '' }}>{{ $instrumentType->name }}</option>
@@ -134,11 +134,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Page No. From</label>
-                                                <input type="number" name="page_no_from" class="form-control" min="1" value="{{ old('page_no_from') }}" required>
+                                                <input type="number" name="page_no_from" style="border: 1px solid #c0c0c0;" class="form-control" min="1" value="{{ old('page_no_from') }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Page No. To</label>
-                                                <input type="number" name="page_no_to" class="form-control" min="1" value="{{ old('page_no_to') }}" required>
+                                                <input type="number" name="page_no_to" style="border: 1px solid #c0c0c0;" class="form-control" min="1" value="{{ old('page_no_to') }}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -147,7 +147,7 @@
                                         <div class="row g-3">
                                             <div class="col-12">
                                                 <label class="form-label">Party Name</label>
-                                                <input type="text" name="party_name" class="form-control" value="{{ old('party_name') }}">
+                                                <input type="text" name="party_name" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('party_name') }}">
                                             </div>
                                             <div class="col-12">
                                                 <div class="border rounded p-4 bg-light">
@@ -164,15 +164,15 @@
                                         <div class="row g-3">
                                             <div class="col-12">
                                                 <label class="form-label">Property Details</label>
-                                                <textarea name="property_details" class="form-control" rows="4">{{ old('property_details') }}</textarea>
+                                                <textarea name="property_details" style="border: 1px solid #c0c0c0;" class="form-control" rows="4">{{ old('property_details') }}</textarea>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Village</label>
-                                                <input type="text" name="village" class="form-control" value="{{ old('village') }}">
+                                                <input type="text" name="village" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('village') }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Area</label>
-                                                <input type="text" name="area" class="form-control" value="{{ old('area') }}">
+                                                <input type="text" name="area" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('area') }}">
                                             </div>
                                             <div class="col-12">
                                                 <div class="border rounded p-4 bg-light">

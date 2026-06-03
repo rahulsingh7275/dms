@@ -16,36 +16,36 @@
 
 <div class="card p-3 mb-4">
     <form method="GET" action="{{ route('deeds.index') }}" class="row g-3 align-items-end">
-        <div class="col-md-3">
-            <label class="form-label">State</label>
-            <select name="state_id" class="form-select">
+        <div class="col-sm-3">
+            <span style="color: black;">State:</span>
+            <select name="state_id" id="state_id" style="border: 1px solid #c0c0c0;" class="form-control">
                 <option value="">All states</option>
                 @foreach($states as $state)
                     <option value="{{ $state->id }}" {{ (string) $stateId === (string) $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
                 @endforeach
             </select>
         </div>
-        <div class="col-md-3">
-            <label class="form-label">District</label>
-            <select name="district_id" class="form-select">
+        <div class="col-sm-3">
+            <span style="color: black;">District:</span>
+            <select name="district_id" id="district_id" style="border: 1px solid #c0c0c0;" class="form-control">
                 <option value="">All districts</option>
                 @foreach($districts as $district)
                     <option value="{{ $district->id }}" {{ (string) $districtId === (string) $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
                 @endforeach
             </select>
         </div>
-        <div class="col-md-3">
-            <label class="form-label">Office</label>
-            <select name="office_id" class="form-select">
+        <div class="col-sm-3">
+            <span style="color: black;">Office:</span>
+            <select name="office_id" id="office_id" style="border: 1px solid #c0c0c0;" class="form-control">
                 <option value="">All offices</option>
                 @foreach($offices as $office)
                     <option value="{{ $office->id }}" {{ (string) $officeId === (string) $office->id ? 'selected' : '' }}>{{ $office->office_name }}</option>
                 @endforeach
             </select>
         </div>
-        <div class="col-md-3">
-            <label class="form-label">Status</label>
-            <select name="status" class="form-select">
+        <div class="col-sm-3">
+            <span style="color: black;">Status:</span>
+            <select name="status" id="status" style="border: 1px solid #c0c0c0;" class="form-control">
                 <option value="">All statuses</option>
                 <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Pending</option>
                 <option value="approved" {{ $status === 'approved' ? 'selected' : '' }}>Approved</option>
@@ -54,38 +54,40 @@
         </div>
         <div class="col-md-3">
             <label class="form-label">Volume Year</label>
-            <input type="text" name="volume_year" class="form-control" value="{{ $volumeYear }}" placeholder="Filter year">
+            <input type="text" name="volume_year" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $volumeYear }}" placeholder="Filter year">
         </div>
         <div class="col-md-3">
             <label class="form-label">Book</label>
-            <input type="text" name="book_number" class="form-control" value="{{ $bookNumber }}" placeholder="Filter book">
+            <input type="text" name="book_number" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $bookNumber }}" placeholder="Filter book">
         </div>
         <div class="col-md-3">
             <label class="form-label">Volume</label>
-            <input type="text" name="volume_number" class="form-control" value="{{ $volumeNumber }}" placeholder="Filter volume">
+            <input type="text" name="volume_number" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $volumeNumber }}" placeholder="Filter volume">
         </div>
         <div class="col-md-3">
             <label class="form-label">Presentation Year</label>
-            <input type="text" name="presentation_year" class="form-control" value="{{ $presentationYear }}" placeholder="Filter deed year">
+            <input type="text" name="presentation_year" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $presentationYear }}" placeholder="Filter deed year">
         </div>
         <div class="col-md-3">
             <label class="form-label">Deed Number</label>
-            <input type="text" name="deed_number" class="form-control" value="{{ $deedNumber }}" placeholder="Filter deed number">
+            <input type="text" name="deed_number" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $deedNumber }}" placeholder="Filter deed number">
         </div>
         <div class="col-md-3">
             <label class="form-label">Party Name</label>
-            <input type="text" name="party_name" class="form-control" value="{{ $partyName }}" placeholder="Filter party">
+            <input type="text" name="party_name" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $partyName }}" placeholder="Filter party">
         </div>
         <div class="col-md-3">
             <label class="form-label">Village</label>
-            <input type="text" name="village" class="form-control" value="{{ $village }}" placeholder="Filter village">
+            <input type="text" name="village" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $village }}" placeholder="Filter village">
         </div>
         <div class="col-md-3">
             <label class="form-label">Registration Date</label>
-            <input type="date" name="registration_date" class="form-control" value="{{ $registrationDate }}">
+            <input type="date" name="registration_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $registrationDate }}">
         </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary w-100">Filter</button>
+       <span>
+
+        <div class="col-md-3 d-flex align-items-end" style="margin-top: 10%">
+            <button type="submit" class="btn btn-primary btn-sm w-100" style="padding: 0.45rem 0.75rem;">Filter</button>
         </div>
     </form>
 </div>
@@ -130,18 +132,18 @@
                             <td>{{ $deed->village ?? '-' }}</td>
                             <td>{{ ucfirst($deed->status) }}</td>
                             <td>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap">
                                     @if($deed->scannedDocuments->isNotEmpty())
                                         @php $doc = $deed->scannedDocuments->last(); @endphp
-                                        <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary">View PDF</a>
-                                        <a href="{{ route('deeds.download', $deed) }}" class="btn btn-sm btn-outline-success">Download</a>
+                                        <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary px-2 py-1 me-1 mb-1">View PDF</a>
+                                        <a href="{{ route('deeds.download', $deed) }}" class="btn btn-sm btn-outline-success px-2 py-1 me-1 mb-1">Download</a>
                                     @endif
 
                                     @php $user = auth()->user(); @endphp
                                     @if($user && $user->isOperator() && $deed->status !== 'approved')
                                         <button
                                             type="button"
-                                            class="btn btn-sm btn-warning"
+                                            class="btn btn-sm btn-warning px-2 py-1 me-1 mb-1"
                                             data-bs-toggle="modal"
                                             data-bs-target="#scannedCopyModal"
                                             data-deed-id="{{ $deed->id }}"
@@ -153,15 +155,15 @@
 
                                     @if($index)
                                         @if($user && $user->isChecker())
-                                            <a href="{{ route('indexes.deeds.show', [$index, $deed]) }}" class="btn btn-sm btn-info">View</a>
+                                            <a href="{{ route('indexes.deeds.show', [$index, $deed]) }}" class="btn btn-sm btn-info px-2 py-1 me-1 mb-1">View</a>
                                         @elseif($deed->status === 'approved')
-                                            <a href="{{ route('indexes.deeds.show', [$index, $deed]) }}" class="btn btn-sm btn-info">View</a>
+                                            <a href="{{ route('indexes.deeds.show', [$index, $deed]) }}" class="btn btn-sm btn-info px-2 py-1 me-1 mb-1">View</a>
                                         @else
-                                            <a href="{{ route('indexes.deeds.edit', [$index, $deed]) }}" class="btn btn-sm btn-secondary">Edit</a>
+                                            <a href="{{ route('indexes.deeds.edit', [$index, $deed]) }}" class="btn btn-sm btn-secondary px-2 py-1 me-1 mb-1">Edit</a>
                                             <form method="POST" action="{{ route('indexes.deeds.destroy', [$index, $deed]) }}" class="d-inline-block" onsubmit="return confirm('Delete this deed?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                                <button class="btn btn-sm btn-danger px-2 py-1 me-1 mb-1">Delete</button>
                                             </form>
                                         @endif
                                     @else
@@ -170,15 +172,15 @@
 
                                     @if($deed->metadata)
                                         @if($user && $user->isChecker())
-                                            <a href="{{ route('deeds.metadata.show', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-info">View Metadata</a>
+                                            <a href="{{ route('deeds.metadata.show', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-info px-2 py-1 me-1 mb-1">View Metadata</a>
                                         @elseif($deed->metadata->status === 'approved')
-                                            <a href="{{ route('deeds.metadata.show', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-info">View Metadata</a>
+                                            <a href="{{ route('deeds.metadata.show', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-info px-2 py-1 me-1 mb-1">View Metadata</a>
                                         @else
-                                            <a href="{{ route('deeds.metadata.edit', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-primary">Edit Metadata</a>
+                                            <a href="{{ route('deeds.metadata.edit', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-primary px-2 py-1 me-1 mb-1">Edit Metadata</a>
                                         @endif
                                     @else
                                         @if($user && ($user->isOperator() || $user->isAdmin()))
-                                            <a href="{{ route('deeds.metadata.create', $deed) }}" class="btn btn-sm btn-info">Create Metadata</a>
+                                            <a href="{{ route('deeds.metadata.create', $deed) }}" class="btn btn-sm btn-info px-2 py-1 me-1 mb-1">Create Metadata</a>
                                         @endif
                                     @endif
                                 </div>

@@ -84,23 +84,23 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Presentation Year</label>
-                                                <input type="text" name="presentation_year" class="form-control" value="{{ old('presentation_year', $metadata->presentation_year) }}" required>
+                                                <input type="text" name="presentation_year" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('presentation_year', $metadata->presentation_year) }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Deed Number</label>
-                                                <input type="text" name="deed_number" class="form-control" value="{{ old('deed_number', $metadata->deed_number) }}" required>
+                                                <input type="text" name="deed_number" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('deed_number', $metadata->deed_number) }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Presection Date</label>
-                                                <input type="date" name="presection_date" class="form-control" value="{{ old('presection_date', optional($metadata->presection_date)->format('Y-m-d')) }}" required>
+                                                <input type="date" name="presection_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('presection_date', optional($metadata->presection_date)->format('Y-m-d')) }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Registration Date</label>
-                                                <input type="date" name="registration_date" class="form-control" value="{{ old('registration_date', optional($metadata->registration_date)->format('Y-m-d')) }}" required>
+                                                <input type="date" name="registration_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('registration_date', optional($metadata->registration_date)->format('Y-m-d')) }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Instrument Type</label>
-                                                <select name="instrument_type_id" class="form-select" required>
+                                                <select name="instrument_type_id" class="form-control" style="border: 1px solid #c0c0c0;" required>
                                                     <option value="">Select Instrument Type</option>
                                                     @foreach($instruments as $instrument)
                                                         <option value="{{ $instrument->id }}" {{ old('instrument_type_id', $metadata->instrument_type_id) == $instrument->id ? 'selected' : '' }}>{{ $instrument->name }}</option>
@@ -109,7 +109,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Instrument Sub Type</label>
-                                                <select name="instrument_sub_type_id" class="form-select" required>
+                                                <select name="instrument_sub_type_id" class="form-control" style="border: 1px solid #c0c0c0;" required>
                                                     <option value="">Select Instrument Sub Type</option>
                                                     @foreach($instrumentTypes as $instrumentType)
                                                         <option value="{{ $instrumentType->id }}" {{ old('instrument_sub_type_id', $metadata->instrument_sub_type_id) == $instrumentType->id ? 'selected' : '' }}>{{ $instrumentType->name }}</option>
@@ -118,11 +118,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Page No. From</label>
-                                                <input type="number" name="page_no_from" class="form-control" min="1" value="{{ old('page_no_from', $metadata->page_no_from) }}" required>
+                                                <input type="number" name="page_no_from" style="border: 1px solid #c0c0c0;" class="form-control" min="1" value="{{ old('page_no_from', $metadata->page_no_from) }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Page No. To</label>
-                                                <input type="number" name="page_no_to" class="form-control" min="1" value="{{ old('page_no_to', $metadata->page_no_to) }}" required>
+                                                <input type="number" name="page_no_to" style="border: 1px solid #c0c0c0;" class="form-control" min="1" value="{{ old('page_no_to', $metadata->page_no_to) }}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -131,7 +131,7 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Party Type</label>
-                                                <select name="party_type" class="form-select">
+                                                <select name="party_type" class="form-control" style="border: 1px solid #c0c0c0;">
                                                     <option value="">Select Party Type</option>
                                                     <option value="executant" {{ old('party_type', $metadata->party_type) === 'executant' ? 'selected' : '' }}>Executant</option>
                                                     <option value="claimant" {{ old('party_type', $metadata->party_type) === 'claimant' ? 'selected' : '' }}>Claimant</option>
@@ -139,11 +139,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Name</label>
-                                                <input type="text" name="party_name" class="form-control" value="{{ old('party_name', $metadata->party_name) }}">
+                                                <input type="text" name="party_name" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('party_name', $metadata->party_name) }}">
                                             </div>
                                             <div class="col-md-12">
                                                 <label class="form-label">Relation Name</label>
-                                                <input type="text" name="relation_name" class="form-control" value="{{ old('relation_name', $metadata->relation_name) }}">
+                                                <input type="text" name="relation_name" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('relation_name', $metadata->relation_name) }}">
                                             </div>
                                         </div>
                                     </div>
@@ -152,7 +152,7 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">District</label>
-                                                <select name="district_id" class="form-select">
+                                                <select name="district_id" class="form-control" style="border: 1px solid #c0c0c0;">
                                                     <option value="">Select District</option>
                                                     @foreach($districts as $district)
                                                         <option value="{{ $district->id }}" {{ old('district_id', $metadata->district_id) == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
@@ -161,7 +161,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Registration Office</label>
-                                                <select name="vault_registration_office_id" class="form-select">
+                                                <select name="vault_registration_office_id" class="form-control" style="border: 1px solid #c0c0c0;">
                                                     <option value="">Select Registration Office</option>
                                                     @foreach($offices as $office)
                                                         <option value="{{ $office->id }}" {{ old('vault_registration_office_id', $metadata->vault_registration_office_id) == $office->id ? 'selected' : '' }}>{{ $office->office_name }}</option>
@@ -170,19 +170,19 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Circle</label>
-                                                <input type="text" name="circle" class="form-control" value="{{ old('circle', $metadata->circle) }}">
+                                                <input type="text" name="circle" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('circle', $metadata->circle) }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Village / Thana</label>
-                                                <input type="text" name="village" class="form-control" value="{{ old('village', $metadata->village) }}">
+                                                <input type="text" name="village" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('village', $metadata->village) }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Khata No.</label>
-                                                <input type="text" name="khata_no" class="form-control" value="{{ old('khata_no', $metadata->khata_no) }}">
+                                                <input type="text" name="khata_no" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('khata_no', $metadata->khata_no) }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Khasra No.</label>
-                                                <input type="text" name="khasra_no" class="form-control" value="{{ old('khasra_no', $metadata->khasra_no) }}">
+                                                <input type="text" name="khasra_no" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('khasra_no', $metadata->khasra_no) }}">
                                             </div>
                                         </div>
                                     </div>
