@@ -221,4 +221,28 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('scripts')
+<script>
+    (function($){
+        $(function(){
+            $('#metadataTabs .nav-link').on('click', function(e){
+                e.preventDefault();
+                var $link = $(this);
+                var target = $link.data('bs-target') || $link.attr('href') || $link.data('target');
+                if (!target) return;
+
+                // Deactivate all links and panes
+                $('#metadataTabs .nav-link').removeClass('active').attr('aria-selected','false');
+                $('#metadataTabsContent .tab-pane').removeClass('show active');
+
+                // Activate clicked link and corresponding pane
+                $link.addClass('active').attr('aria-selected','true');
+                $(target).addClass('show active');
+            });
+        });
+    })(jQuery);
+</script>
 @endsection
