@@ -269,7 +269,7 @@ class DeedController extends Controller
             // Handle scanned PDF upload
             if ($request->hasFile('scanned_copy')) {
                 $file = $request->file('scanned_copy');
-                if (! $file->isValid()) {
+                if (!$file->isValid()) {
                     throw new \RuntimeException('Uploaded file is not valid.');
                 }
                 $path = $file->store('scanned_documents', 'public');
@@ -294,19 +294,21 @@ class DeedController extends Controller
 
     public function storeScannedCopy(Request $request, Deed $deed)
     {
+        // dd('storeScannedCopy called');
         if ($redirect = $this->requireAuth()) {
             return $redirect;
         }
 
         $user = auth()->user();
-        if (! $user || ! $user->isOperator()) {
+        
+        if (!$user || !$user->isOperator()) {
             return redirect()->back()->with('error', 'You do not have permission to upload scanned copies.');
         }
 
-        if ($deed->status === 'approved') {
+        if ($deed->status !== 'approved') {
             return redirect()->back()->with('error', 'Cannot update scanned copy for an approved deed.');
         }
-
+    // dd('validated');
         $data = $request->validate([
             'scanned_copy' => ['required', 'file', 'mimes:pdf', 'max:15360'],
         ]);
@@ -315,7 +317,7 @@ class DeedController extends Controller
         try {
             if ($request->hasFile('scanned_copy')) {
                 $file = $request->file('scanned_copy');
-                if (! $file->isValid()) {
+                if (!$file->isValid()) {
                     throw new \RuntimeException('Uploaded file is not valid.');
                 }
 
@@ -373,7 +375,7 @@ class DeedController extends Controller
         }
 
         $user = auth()->user();
-        if (! $user || (! $user->isOperator() && ! $user->isAdmin())) {
+        if (!$user || (!$user->isOperator() && !$user->isAdmin())) {
             return redirect()->route('indexes.deeds.show', [$index, $deed])->with('error', 'You do not have permission to update this deed.');
         }
 
@@ -410,7 +412,7 @@ class DeedController extends Controller
                 }
 
                 $file = $request->file('scanned_copy');
-                if (! $file->isValid()) {
+                if (!$file->isValid()) {
                     throw new \RuntimeException('Uploaded file is not valid.');
                 }
                 $path = $file->store('scanned_documents', 'public');
@@ -440,7 +442,7 @@ class DeedController extends Controller
         }
 
         $user = auth()->user();
-        if (! $user || (! $user->isOperator() && ! $user->isAdmin())) {
+        if (!$user || (!$user->isOperator() && !$user->isAdmin())) {
             return redirect()->route('indexes.deeds.show', [$index, $deed])->with('error', 'You do not have permission to delete this deed.');
         }
 
@@ -460,7 +462,7 @@ class DeedController extends Controller
         }
 
         $doc = $deed->scannedDocuments()->latest()->first();
-        if (! $doc) {
+        if (!$doc) {
             return redirect()->back()->with('error', 'No scanned document found for this deed.');
         }
 
@@ -474,7 +476,7 @@ class DeedController extends Controller
         }
 
         $user = auth()->user();
-        if (! $user || ! $user->isChecker()) {
+        if (!$user || !$user->isChecker()) {
             return redirect()->route('indexes.show', $index)->with('error', 'You do not have permission to change deed status.');
         }
 

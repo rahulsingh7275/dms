@@ -138,12 +138,12 @@
                                     @endif
 
                                     @php $user = auth()->user(); @endphp
-                                    @if($user && $user->isOperator() && $deed->status !== 'approved')
+                                    @if($user && $user->isOperator() && $deed->status == 'approved' && $deed->scannedDocuments->isEmpty())
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-warning"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#scannedCopyModal"
+                                            data-toggle="modal"
+                                            data-target="#scannedCopyModal"
                                             data-deed-id="{{ $deed->id }}"
                                             data-deed-number="{{ $deed->deed_number }}"
                                         >
@@ -177,7 +177,7 @@
                                             <a href="{{ route('deeds.metadata.edit', [$deed, $deed->metadata]) }}" class="btn btn-sm btn-primary">Edit Metadata</a>
                                         @endif
                                     @else
-                                        @if($user && ($user->isOperator() || $user->isAdmin()))
+                                        @if($user && ($user->isOperator() || $user->isAdmin()) && $deed->status == 'approved' && $deed->scannedDocuments->isNotEmpty())
                                             <a href="{{ route('deeds.metadata.create', $deed) }}" class="btn btn-sm btn-info">Create Metadata</a>
                                         @endif
                                     @endif
@@ -197,7 +197,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="scannedCopyModalLabel">Upload Scanned Copy</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="scannedCopyForm" method="POST" action="" enctype="multipart/form-data">
                 @csrf
@@ -209,7 +209,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
@@ -224,16 +224,23 @@
             return;
         }
 
-        scannedCopyModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var deedId = button.getAttribute('data-deed-id');
-            var deedNumber = button.getAttribute('data-deed-number');
+        $('#scannedCopyModal').on('show.bs.modal', function (event) {
+            debugger;
+            var button = $(event.relatedTarget);
+            // console.log('Button that triggered the modal:', button);
+            // console.log('Button that triggered the modal:', button[0].dataset.deedId);
+            var deedId = button[0].dataset.deedId;
+            var deedNumber = button[0].dataset.deedNumber;
+            // var deedId = button.getAttribute('data-deed-id');
+            // var deedNumber = button.getAttribute('data-deed-number');
             var form = document.getElementById('scannedCopyForm');
+            // console.log('Form element:', form); 
             var label = document.getElementById('scannedCopyDeedLabel');
 
             form.action = '/deeds/' + deedId + '/scanned-copy';
             label.textContent = 'Upload scanned PDF for deed #' + deedNumber;
         });
     });
+ 
 </script>
 @endsection
