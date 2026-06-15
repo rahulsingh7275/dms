@@ -11,7 +11,7 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label">State</label>
-                <select name="state_id" class="form-select" required>
+                <select name="state_id" class="form-control" required>
                     @foreach($states as $state)
                         <option value="{{ $state->id }}" {{ $index->state_id === $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
                     @endforeach
@@ -19,7 +19,7 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">District</label>
-                <select name="district_id" class="form-select" required>
+                <select name="district_id" class="form-control" required>
                     @foreach($districts as $district)
                         <option value="{{ $district->id }}" {{ $index->district_id === $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
                     @endforeach
@@ -27,7 +27,7 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">Registration Office</label>
-                <select name="vault_registration_office_id" class="form-select" required>
+                <select name="vault_registration_office_id" class="form-control" required>
                     @foreach($offices as $office)
                         <option value="{{ $office->id }}" {{ $index->vault_registration_office_id === $office->id ? 'selected' : '' }}>{{ $office->office_name }}</option>
                     @endforeach

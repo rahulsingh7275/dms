@@ -7,6 +7,7 @@
     <title>@section('title') DSMNRU @show</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{{ asset('assets/admin/img/dms-icon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{asset('assets/admin/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
@@ -60,11 +61,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
-        <div class="content-wrapper">
-            
-            @yield('content')
-
-        </div>
+         @yield('content')
 
         @yield('form-model')
 

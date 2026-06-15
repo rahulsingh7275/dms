@@ -19,7 +19,10 @@
             <input class="form-check-input" type="checkbox" id="status" name="status" value="1" checked>
             <label class="form-check-label" for="status">Active</label>
         </div>
-        <button class="btn btn-primary">Save State</button>
+        <div class="d-flex gap-2">
+            <button class="btn btn-md btn-primary">Save State</button>
+            <a href="{{ route('states.index') }}" class="btn btn-md btn-secondary">Cancel</a>
+        </div>
     </form>
 </div>
 @endsection

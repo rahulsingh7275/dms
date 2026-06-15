@@ -19,7 +19,7 @@
         @csrf
         <div class="mb-3">
             <label class="form-label">State</label>
-            <select name="state_id" class="form-select" required>
+            <select name="state_id" class="form-control" required>
                 <option value="">Select State</option>
                 @foreach($states as $state)
                     <option value="{{ $state->id }}">{{ $state->name }}</option>
@@ -39,8 +39,8 @@
             <label class="form-check-label" for="status">Active</label>
         </div>
         <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Save District</button>
-            <a href="{{ route('districts.index') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-md btn-primary">Save District</button>
+            <a href="{{ route('districts.index') }}" class="btn btn-md btn-secondary">Cancel</a>
         </div>
     </form>
 </div>

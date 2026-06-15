@@ -3,7 +3,7 @@
 @section('title', 'Create User')
 
 @section('content')
-<div class="card p-4">
+        <div class="card p-4">
     <h3>Create New User</h3>
     <form method="POST" action="{{ route('admin.users.store') }}">
         @csrf
@@ -25,14 +25,23 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Role</label>
-            <select name="role_id" class="form-select" required>
+            <select name="role_id" class="form-control selectpicker" required>
                 <option value="">Select Role</option>
-                @foreach($roles as $role)
-                    <option value="{{ $role->id }}">{{ $role->label }}</option>
+                @foreach($roles ?? [] as $role)
+                    @php
+                        $rid = is_object($role) ? ($role->id ?? null) : (is_array($role) ? ($role['id'] ?? null) : null);
+                        $rlabel = is_object($role) ? ($role->label ?? $role->name ?? '') : (is_array($role) ? ($role['label'] ?? $role['name'] ?? '') : '');
+                    @endphp
+                    @if($rid)
+                        <option value="{{ $rid }}">{{ $rlabel }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>
-        <button class="btn btn-primary">Create User</button>
+        <div class="d-flex gap-2">
+            <button class="btn btn-md btn-primary">Create User</button>
+            <a href="{{ route('admin.users.index') }}" class="btn btn-md btn-secondary">Cancel</a>
+        </div>
     </form>
 </div>
 @endsection

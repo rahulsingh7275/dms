@@ -12,7 +12,7 @@
                 @method('PUT')
                 <div class="mb-3">
                     <label class="form-label">Instrument</label>
-                    <select name="instrument_id" class="form-select" required>
+                    <select name="instrument_id" class="form-control" required>
                         <option value="">Select instrument</option>
                         @foreach($instruments as $instrument)
                             <option value="{{ $instrument->id }}" {{ old('instrument_id', $instrumentType->instrument_id) == $instrument->id ? 'selected' : '' }}>{{ $instrument->name }}</option>

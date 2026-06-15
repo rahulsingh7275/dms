@@ -9,8 +9,8 @@
         @csrf
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">State</label>
-                <select name="state_id" class="form-select" required>
+                <span style="color: black;">State:</span>
+                <select name="state_id" id="state_id" style="border: 1px solid #c0c0c0;" class="form-control" required>
                     <option value="">Select State</option>
                     @foreach($states as $state)
                         <option value="{{ $state->id }}">{{ $state->name }}</option>
@@ -18,8 +18,8 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <label class="form-label">District</label>
-                <select name="district_id" class="form-select" required>
+                <span style="color: black;">District:</span>
+                <select name="district_id" id="district_id" style="border: 1px solid #c0c0c0;" class="form-control" required>
                     <option value="">Select District</option>
                     @foreach($districts as $district)
                         <option value="{{ $district->id }}">{{ $district->name }}</option>
@@ -27,8 +27,8 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <label class="form-label">Registration Office</label>
-                <select name="vault_registration_office_id" class="form-select" required>
+                <span style="color: black;">Registration Office:</span>
+                <select name="vault_registration_office_id" id="vault_registration_office_id" style="border: 1px solid #c0c0c0;" class="form-control" required>
                     <option value="">Select Office</option>
                     @foreach($offices as $office)
                         <option value="{{ $office->id }}">{{ $office->office_name }}</option>
@@ -37,15 +37,15 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">Volume Year</label>
-                <input type="text" name="volume_year" class="form-control" required>
+                <input type="text" name="volume_year" style="border: 1px solid #c0c0c0;" class="form-control" required>
             </div>
             <div class="col-md-4">
                 <label class="form-label">Book No.</label>
-                <input type="text" name="book_number" class="form-control" required>
+                <input type="text" name="book_number" style="border: 1px solid #c0c0c0;" class="form-control" required>
             </div>
             <div class="col-md-4">
                 <label class="form-label">Volume No.</label>
-                <input type="text" name="volume_number" class="form-control" required>
+                <input type="text" name="volume_number" style="border: 1px solid #c0c0c0;" class="form-control" required>
             </div>
             <div class="col-md-12 form-check mt-3">
                 <input class="form-check-input" type="checkbox" name="is_volume_forwarded" id="is_forwarded" value="1">

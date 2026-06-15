@@ -9,7 +9,7 @@
         @csrf
         <div class="mb-3">
             <label class="form-label">District</label>
-            <select name="district_id" class="form-select" required>
+            <select name="district_id" class="form-control" required>
                 <option value="">Select District</option>
                 @foreach($districts as $district)
                     <option value="{{ $district->id }}">{{ $district->state->name }} / {{ $district->name }}</option>
@@ -32,7 +32,10 @@
             <input class="form-check-input" type="checkbox" id="status" name="status" value="1" checked>
             <label class="form-check-label" for="status">Active</label>
         </div>
-        <button class="btn btn-primary">Save Office</button>
+        <div class="d-flex gap-2">
+            <button class="btn btn-md btn-primary">Save Office</button>
+            <a href="{{ route('offices.index') }}" class="btn btn-md btn-secondary">Cancel</a>
+        </div>
     </form>
 </div>
 @endsection

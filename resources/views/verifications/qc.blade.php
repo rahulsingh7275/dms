@@ -27,7 +27,7 @@
                     <td>
                         <form method="POST" action="{{ route('verifications.qc.verify', $index) }}" class="d-flex gap-2">
                             @csrf
-                            <select name="status" class="form-select form-select-sm" required>
+                            <select name="status" class="form-control form-control-sm" required>
                                 <option value="approved">Approve</option>
                                 <option value="rejected">Reject</option>
                                 <option value="return_for_correction">Return for Correction</option>

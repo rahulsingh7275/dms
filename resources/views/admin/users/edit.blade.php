@@ -26,18 +26,24 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Role</label>
-            <select name="role_id" class="form-select" required>
+            <select name="role_id" class="form-control" required>
                 <option value="">Select Role</option>
-                @foreach($roles as $role)
-                    <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
-                        {{ $role->label }}
-                    </option>
+                @foreach($roles ?? [] as $role)
+                    @php
+                        $rid = is_object($role) ? ($role->id ?? null) : (is_array($role) ? ($role['id'] ?? null) : null);
+                        $rlabel = is_object($role) ? ($role->label ?? $role->name ?? '') : (is_array($role) ? ($role['label'] ?? $role['name'] ?? '') : '');
+                    @endphp
+                    @if($rid)
+                        <option value="{{ $rid }}" {{ old('role_id', $user->role_id) == $rid ? 'selected' : '' }}>
+                            {{ $rlabel }}
+                        </option>
+                    @endif
                 @endforeach
             </select>
         </div>
         <div class="d-flex gap-2">
-            <button class="btn btn-primary">Update User</button>
-            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Cancel</a>
+            <button class="btn btn-md btn-primary">Update User</button>
+            <a href="{{ route('admin.users.index') }}" class="btn btn-md btn-secondary">Cancel</a>
         </div>
     </form>
 </div>

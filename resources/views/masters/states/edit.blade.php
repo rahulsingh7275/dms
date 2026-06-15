@@ -20,7 +20,10 @@
             <input class="form-check-input" type="checkbox" id="status" name="status" value="1" {{ $state->status ? 'checked' : '' }}>
             <label class="form-check-label" for="status">Active</label>
         </div>
-        <button class="btn btn-primary">Update State</button>
+        <div class="d-flex gap-2">
+            <button class="btn btn-md btn-primary">Update State</button>
+            <a href="{{ route('states.index') }}" class="btn btn-md btn-secondary">Cancel</a>
+        </div>
     </form>
 </div>
 @endsection

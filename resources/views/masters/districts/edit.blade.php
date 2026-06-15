@@ -20,7 +20,7 @@
         @method('PUT')
         <div class="mb-3">
             <label class="form-label">State</label>
-            <select name="state_id" class="form-select" required>
+            <select name="state_id" class="form-control" required>
                 @foreach($states as $state)
                     <option value="{{ $state->id }}" {{ $district->state_id === $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
                 @endforeach
@@ -39,8 +39,8 @@
             <label class="form-check-label" for="status">Active</label>
         </div>
         <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Update District</button>
-            <a href="{{ route('districts.index') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-md btn-primary">Update District</button>
+            <a href="{{ route('districts.index') }}" class="btn btn-md btn-secondary">Cancel</a>
         </div>
     </form>
 </div>

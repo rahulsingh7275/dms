@@ -10,7 +10,7 @@
         @method('PUT')
         <div class="mb-3">
             <label class="form-label">District</label>
-            <select name="district_id" class="form-select" required>
+            <select name="district_id" class="form-control" required>
                 @foreach($districts as $district)
                     <option value="{{ $district->id }}" {{ $office->district_id === $district->id ? 'selected' : '' }}>{{ $district->state->name }} / {{ $district->name }}</option>
                 @endforeach
@@ -32,7 +32,10 @@
             <input class="form-check-input" type="checkbox" id="status" name="status" value="1" {{ $office->status ? 'checked' : '' }}>
             <label class="form-check-label" for="status">Active</label>
         </div>
-        <button class="btn btn-primary">Update Office</button>
+        <div class="d-flex gap-2">
+            <button class="btn btn-md btn-primary">Update Office</button>
+            <a href="{{ route('offices.index') }}" class="btn btn-md btn-secondary">Cancel</a>
+        </div>
     </form>
 </div>
 @endsection

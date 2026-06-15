@@ -18,8 +18,8 @@
                     <input type="text" name="code" class="form-control" value="{{ old('code') }}">
                 </div>
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('admin.instruments.index') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Save Instrument</button>
+                    <a href="{{ route('admin.instruments.index') }}" class="btn btn-md btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-md btn-primary">Save Instrument</button>
                 </div>
             </form>
         </div>
