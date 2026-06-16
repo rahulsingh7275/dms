@@ -110,11 +110,12 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Presentation Date</label>
-                                                <input type="date" name="presection_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $prefPresectionDate }}" required {{ $prefPresectionDate !== '' ? 'readonly' : '' }}>
+                                                <input type="date" name="presection_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $prefPresectionDate }}" required {{ $prefPresectionDate !== '' ? 'readonly' : '' }}
+                                                max="{{ now()->format('Y-m-d') }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Registration Date</label>
-                                                <input type="date" name="registration_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $prefRegistrationDate }}" required {{ $prefRegistrationDate !== '' ? 'readonly' : '' }}>
+                                                <input type="date" name="registration_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $prefRegistrationDate }}" required {{ $prefRegistrationDate !== '' ? 'readonly' : '' }} max="{{ now()->format('Y-m-d') }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Instrument Type</label>

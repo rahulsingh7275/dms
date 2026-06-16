@@ -88,11 +88,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Deed Number</label>
-                                                <input type="text" name="deed_number" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('deed_number', $metadata->deed_number) }}" required>
+                                                <input type="text" name="deed_number" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('deed_number', $metadata->deed_number) }}" max="{{ now()->format('Y-m-d') }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Presection Date</label>
-                                                <input type="date" name="presection_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('presection_date', optional($metadata->presection_date)->format('Y-m-d')) }}" required>
+                                                <input type="date" name="presection_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ old('presection_date', optional($metadata->presection_date)->format('Y-m-d')) }}" max="{{ now()->format('Y-m-d') }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Registration Date</label>

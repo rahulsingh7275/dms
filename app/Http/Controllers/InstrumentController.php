@@ -59,6 +59,9 @@ class InstrumentController extends Controller
             'code' => ['nullable', 'string', 'max:50', 'unique:instruments,code'],
         ]);
 
+        // ensure status is set (checkbox may be absent when unchecked)
+        $validated['status'] = $request->has('status') ? 1 : 0;
+
         Instrument::create($validated);
 
         return redirect()->route('admin.instruments.index')->with('status', 'Instrument created successfully.');
@@ -91,6 +94,8 @@ class InstrumentController extends Controller
             'name' => ['required', 'string', 'max:100', 'unique:instruments,name,' . $instrument->id],
             'code' => ['nullable', 'string', 'max:50', 'unique:instruments,code,' . $instrument->id],
         ]);
+
+        $validated['status'] = $request->has('status') ? 1 : 0;
 
         $instrument->update($validated);
 

@@ -230,7 +230,7 @@
                                     <a data-toggle="dropdown" href="#" aria-expanded="true">
 
                                         @php $user = auth()->user(); @endphp
-                                        <p>User
+                                        <p>
                                             @if($user?->isDepartmentHead())
                                                 <span>HOD</span>
                                             @elseif($user?->isAdmin())
@@ -352,6 +352,14 @@
                 </div>
             </div>
             <div class="container-fluid pl-2 pr-3 py-3">
+                @if ($message = Session::get('status'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-box">
+                        {{ $message }}
+                        <button type="button" class="text-dark close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
                 @yield('content')
             </div>
 
@@ -371,6 +379,18 @@
         <script src="/assets/admin/js/bootstrap-select.js"></script>
         <script src="/assets/admin/js/custom-app.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                setTimeout(function () {
+                    const alertBox = document.getElementById('alert-box');
+
+                    if (alertBox) {
+                        alertBox.style.display = 'none';
+                    }
+                }, 5000); // 5 seconds
+            });
+        </script>
 
         @yield('scripts')
 

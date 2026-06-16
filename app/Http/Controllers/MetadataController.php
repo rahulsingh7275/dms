@@ -260,7 +260,7 @@ class MetadataController extends Controller
 
         $metadata->update($data);
 
-        return redirect()->route('indexes.deeds.index', $deed->index)->with('status', 'Metadata updated successfully.');
+        return redirect()->route('metadata.index')->with('status', 'Metadata updated successfully.');
     }
 
     public function destroy(Deed $deed, Metadata $metadata)

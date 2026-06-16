@@ -61,20 +61,16 @@
     </div>
 </div>
 
-@if ($message = Session::get('status'))
-    <div class="alert alert-success alert-dismissible fade show">
-        {{ $message }}
-        <button type="button" class="btn-close" data-dismiss="alert"></button>
-    </div>
-@endif
+
 
 <div class="card p-3">
     <table class="table table-striped table-bordered admintable border-0" cellspacing="0" cellpadding="0">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Code</th>
-                <th>Actions</th>
+                <th class="text-left">Name</th>
+                <th class="text-left">Code</th>
+                <th class="text-left">Status</th>
+                <th class="text-left">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -82,6 +78,7 @@
                 <tr>
                     <td>{{ $instrument->name }}</td>
                     <td>{{ $instrument->code ?? '-' }}</td>
+                    <td>{{ $instrument->status ? 'Active' : 'Inactive' }}</td>
                     <td>
                         <center>
                             <div class="dropdown">
@@ -107,5 +104,10 @@
             @endforeach
         </tbody>
     </table>
+    @if(method_exists($instruments, 'links'))
+        <div class="pagination_rounded pr-4 mt-3">
+            {{ $instruments->withQueryString()->links() }}
+        </div>
+    @endif
 </div>
 @endsection
