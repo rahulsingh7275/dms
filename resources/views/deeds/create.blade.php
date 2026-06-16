@@ -49,11 +49,12 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">Registration Date</label>
-                <input type="date" name="registration_date" style="border: 1px solid #c0c0c0;" class="form-control @error('registration_date') is-invalid @enderror" value="{{ old('registration_date') }}">
+                <input type="date" name="registration_date" style="border: 1px solid #c0c0c0;" class="form-control @error('registration_date') is-invalid @enderror" value="{{ old('registration_date') }}" max="{{ now()->format('Y-m-d') }}">
                 @error('registration_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
         <button type="submit" class="btn btn-primary mt-4">Save Deed</button>
+        <a href="{{ route('indexes.deeds.index', $index) }}" class="btn btn-md btn-secondary ms-2 mt-4">Cancel</a>
     </form>
 </div>
 @endsection

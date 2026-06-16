@@ -8,7 +8,7 @@
     <form method="POST" action="{{ route('indexes.deeds.update', [$index, $deed]) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        @if($errors->any())
+        {{-- @if($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
                     @foreach($errors->all() as $error)
@@ -16,7 +16,7 @@
                     @endforeach
                 </ul>
             </div>
-        @endif
+        @endif --}}
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label">Presentation Year</label>
@@ -50,10 +50,15 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">Registration Date</label>
-                <input type="date" name="registration_date" class="form-control @error('registration_date') is-invalid @enderror" value="{{ old('registration_date', optional($deed->registration_date)->format('Y-m-d')) }}">
+                <input type="date" name="registration_date" class="form-control @error('registration_date') is-invalid @enderror" value="{{ old('registration_date', optional($deed->registration_date)->format('Y-m-d')) }}" max="{{ now()->format('Y-m-d') }}">
                 @error('registration_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
+                <label class="form-label">Remark</label>
+                <textarea name="remark" class="form-control @error('remark') is-invalid @enderror"></textarea>
+                @error('remark')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            {{-- <div class="col-md-6">
                 <label class="form-label">Scanned Copy (PDF)</label>
                 @if($deed->scannedDocuments->isNotEmpty())
                     @php $doc = $deed->scannedDocuments->last(); @endphp
@@ -64,9 +69,10 @@
                 @endif
                 <input type="file" name="scanned_copy" class="form-control @error('scanned_copy') is-invalid @enderror" accept="application/pdf">
                 @error('scanned_copy')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
+            </div> --}}
         </div>
         <button type="submit" class="btn btn-primary mt-4">Update Deed</button>
+        <a href="{{ route('indexes.deeds.index', $index) }}" class="btn btn-md btn-secondary ms-2 mt-4">Cancel</a>
     </form>
 </div>
 @endsection

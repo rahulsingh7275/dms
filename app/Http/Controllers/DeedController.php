@@ -393,11 +393,29 @@ class DeedController extends Controller
             'area' => ['nullable', 'string', 'max:100'],
             'registration_date' => ['nullable', 'date'],
             'scanned_copy' => ['nullable', 'file', 'mimes:pdf', 'max:15360'],
+            'remark' => ['required', 'string', 'max:1000'],
+        ],
+        [
+            'presentation_year.required' => 'Presentation year is required.',
+            'deed_number.required' => 'Deed number is required.',
+            'remark.required' => 'Please provide a remark for the update.',
         ]);
 
+        $data['status'] = 'pending'; // Reset status to pending on update
+        $data['remark'] = $request->input('remark', null); // Store remark if provided
         // Use transaction so file operations are atomic with the deed update
+        // dd($data);
         DB::beginTransaction();
         try {
+
+        DeedVerification::create([
+            'deed_id' => $deed->id,
+            'checker_id' => auth()->id(),
+            'status' => $data['status'],
+            'remarks' => $data['remark'] ?? null,
+            'verified_at' => now(),
+        ]);
+
             $deed->update($data);
 
             // Handle scanned PDF upload (replacement)

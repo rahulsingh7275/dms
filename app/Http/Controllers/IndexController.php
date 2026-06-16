@@ -7,6 +7,7 @@ use App\Models\Index;
 use App\Models\IndexVerification;
 use App\Models\State;
 use App\Models\VaultRegistrationOffice;
+use DateTime;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -147,10 +148,17 @@ class IndexController extends Controller
             'volume_year' => ['required', 'string', 'max:10'],
             'book_number' => ['required', 'string', 'max:100'],
             'volume_number' => ['required', 'string', 'max:100'],
+            'status_comment' => ['required', 'string', 'max:1000'],
             'is_volume_forwarded' => ['nullable', 'boolean'],
         ]);
 
-        $index->update(array_merge($data, ['is_volume_forwarded' => $request->boolean('is_volume_forwarded')]));
+        $data['updated_at'] = now();
+        $data['is_volume_forwarded']=$request->boolean('is_volume_forwarded');
+        $data['status']='pending';
+
+        // dd($data);
+
+        $index->update($data);
 
         return redirect()->route('indexes.index')->with('status', 'Index updated successfully.');
     }
@@ -218,6 +226,7 @@ class IndexController extends Controller
         ]);
 
         $index->status = $data['status'];
+        $index->status_comment = $data['comment'] ?? null;
         $index->locked = $data['status'] === 'approved';
         $index->save();
 

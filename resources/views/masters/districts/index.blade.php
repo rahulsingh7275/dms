@@ -29,7 +29,7 @@
         @if(session('status'))
             <div class="alert alert-success alert-dismissible fade show">
                 {{ session('status') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="btn-close" data-dismiss="alert"></button>
             </div>
         @endif
 

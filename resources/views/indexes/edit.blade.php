@@ -45,6 +45,10 @@
                 <label class="form-label">Volume No.</label>
                 <input type="text" name="volume_number" class="form-control" value="{{ old('volume_number', $index->volume_number) }}" required>
             </div>
+            <div class="col-md-4">
+                <label class="form-label">Remark</label>
+                <input type="text" name="status_comment" class="form-control" value="">
+            </div>
             <div class="col-md-12 form-check mt-3">
                 <input class="form-check-input" type="checkbox" name="is_volume_forwarded" id="is_forwarded" value="1" {{ $index->is_volume_forwarded ? 'checked' : '' }}>
                 <label class="form-check-label" for="is_forwarded">Volume Forwarded</label>

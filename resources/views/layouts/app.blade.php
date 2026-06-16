@@ -7,7 +7,7 @@
     <title>@section('title') DSMNRU @show</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="{{ asset('assets/admin/img/dms-icon.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('assets/admin/img/dms-icon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{asset('assets/admin/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
@@ -63,58 +63,52 @@
 
 
         @auth
-        <aside class="main-sidebar sidebar-dark-primary">
-            <div class="navbg">
-                <img src="/assets/admin/img/navtopbg.svg" />
-            </div>
+            <aside class="main-sidebar sidebar-dark-primary">
+                <div class="navbg">
+                    <img src="/assets/admin/img/navtopbg.svg" />
+                </div>
 
-            <div class="sidebar">
+                <div class="sidebar">
 
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                            data-accordion="false">
 
-                        <li class="nav-item">
-                            <a href="{{ route('home') }}" class="nav-link">
-                                <i class="mdi mdi-home-outline"></i>
-                                <p>Home</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('dashboard') }}" class="nav-link">
-                                <i class="mdi mdi-view-dashboard-outline"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('indexes.index') }}" class="nav-link">
-                                <i class="mdi mdi-file-document-outline"></i>
-                                <p>Indexes</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('deeds.index') }}" class="nav-link">
-                                <i class="mdi mdi-file-upload"></i>
-                                <p>Upload Scanned Copy</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('metadata.index') }}" class="nav-link">
-                                <i class="mdi mdi-card-account-details-outline"></i>
-                                <p>Metadata</p>
-                            </a>
-                        </li>
-                        @if(auth()->user()->isAdmin())
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="mdi mdi-database"></i>
-                                <p>Masters<i class="fa fa-angle-left right"></i></p>
-                            </a>
-                            <ul class="nav nav-treeview" style="display: none;">
-                                <li class="nav-item">
-                                    <a href="{{ route('states.index') }}" class="nav-link">
-                                        <i class="mdi mdi-map-marker-radius"></i>
-                                        <p>States</p>
+                            <li class="nav-item">
+                                <a href="{{ route('home') }}" class="nav-link">
+                                    <i class="mdi mdi-home-outline"></i>
+                                    <p>Home</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard') }}" class="nav-link">
+                                    <i class="mdi mdi-view-dashboard-outline"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('indexes.index') }}" class="nav-link">
+                                    <i class="mdi mdi-file-document-outline"></i>
+                                    <p>Indexes</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('deeds.index') }}" class="nav-link">
+                                    <i class="mdi mdi-file-upload"></i>
+                                    <p>Upload Scanned Copy</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('metadata.index') }}" class="nav-link">
+                                    <i class="mdi mdi-card-account-details-outline"></i>
+                                    <p>Metadata</p>
+                                </a>
+                            </li>
+                            @if(auth()->user()->isAdmin())
+                                <li class="nav-item has-treeview">
+                                    <a href="#" class="nav-link">
+                                        <i class="mdi mdi-database"></i>
+                                        <p>Masters<i class="fa fa-angle-left right"></i></p>
                                     </a>
                                     <ul class="nav nav-treeview" style="display: none;">
                                         <li class="nav-item">
@@ -122,12 +116,52 @@
                                                 <i class="mdi mdi-map-marker-radius"></i>
                                                 <p>States</p>
                                             </a>
+                                            <ul class="nav nav-treeview" style="display: none;">
+                                                <li class="nav-item">
+                                                    <a href="{{ route('states.index') }}" class="nav-link">
+                                                        <i class="mdi mdi-map-marker-radius"></i>
+                                                        <p>States</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ route('districts.index') }}" class="nav-link">
+                                                        <i class="mdi mdi-city"></i>
+                                                        <p>Districts</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ route('offices.index') }}" class="nav-link">
+                                                        <i class="mdi mdi-office-building"></i>
+                                                        <p>Vault Offices</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="{{ route('districts.index') }}" class="nav-link">
-                                                <i class="mdi mdi-city"></i>
-                                                <p>Districts</p>
+                                        <li class="nav-item has-treeview">
+                                            <a href="#" class="nav-link">
+                                                <i class="mdi mdi-account-group"></i>
+                                                <p>Admin<i class="fa fa-angle-left right"></i></p>
                                             </a>
+                                            <ul class="nav nav-treeview" style="display: none;">
+                                                <li class="nav-item">
+                                                    <a href="{{ route('admin.users.index') }}" class="nav-link">
+                                                        <i class="mdi mdi-account-multiple-outline"></i>
+                                                        <p>Users</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ route('admin.instruments.index') }}" class="nav-link">
+                                                        <i class="mdi mdi-book-open-page-variant"></i>
+                                                        <p>Instruments</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ route('admin.instrument-types.index') }}" class="nav-link">
+                                                        <i class="mdi mdi-shape-outline"></i>
+                                                        <p>Instrument Types</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
                                         <li class="nav-item">
                                             <a href="{{ route('offices.index') }}" class="nav-link">
@@ -163,48 +197,14 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('offices.index') }}" class="nav-link">
-                                        <i class="mdi mdi-office-building"></i>
-                                        <p>Vault Offices</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="mdi mdi-account-group"></i>
-                                <p>Admin<i class="fa fa-angle-left right"></i></p>
-                            </a>
-                            <ul class="nav nav-treeview" style="display: none;">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.users.index') }}" class="nav-link">
-                                        <i class="mdi mdi-account-multiple-outline"></i>
-                                        <p>Users</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.instruments.index') }}" class="nav-link">
-                                        <i class="mdi mdi-book-open-page-variant"></i>
-                                        <p>Instruments</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.instrument-types.index') }}" class="nav-link">
-                                        <i class="mdi mdi-shape-outline"></i>
-                                        <p>Instrument Types</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        @endif
+                            @endif
 
-                    </ul>
-                </nav>
+                        </ul>
+                    </nav>
 
-            </div>
+                </div>
 
-        </aside>
+            </aside>
         @endauth
 
         <div class="content-wrapper">
@@ -212,54 +212,55 @@
                 <div class="container-fluid mt-3">
 
                     @auth
-                    <div class="row mb-2">
-                        <div class="col-md-4 col-1 d-flex align-items-center">
-                            <a class="sidebar-toggle-btn d-none d-md-inline-flex" data-widget="pushmenu" href="#"
-                                role="button" aria-label="Toggle sidebar">
-                                <img src="/assets/admin/img/menu-left-alt.svg" alt="Toggle sidebar" />
-                            </a>
-                            <a class="d-block d-md-none" data-widget="pushmenu" href="#" role="button"
-                                aria-label="Toggle sidebar"><img src="/assets/admin/img/menu-left-alt.svg"
-                                    alt="Toggle sidebar" /></a>
-                            <a class="d-block d-sm-none d-md-block" href="#" role="button"><img
-                                    src="/assets/admin/img/dms-header.png" alt="Logo" /></a>
-                        </div>
-                        <div class="col-md-7 col-11 user-profile offset-md-1">
-
-                            <div class="float-right dropdown userData">
-                                <a data-toggle="dropdown" href="#" aria-expanded="true">
-
-                                   @php $user = auth()->user(); @endphp
-                                   <p>User
-                                    @if($user?->isDepartmentHead())
-                                        <span>HOD</span>
-                                    @elseif($user?->isAdmin())
-                                        <span>Admin</span>
-                                    @elseif($user?->isOperator())
-                                        <span>Operator</span>
-                                    @else
-                                        <span>{{ ucfirst(str_replace('_', ' ', $user?->role?->name ?? 'User')) }}</span>
-                                    @endif
-                                   </p>
-
-                                    <img src="/assets/admin/img/user.jpeg" class="img-circle mr-1" width="36" /> <img src="/assets/admin/img/dot.svg" class="float-none" />
+                        <div class="row mb-2">
+                            <div class="col-md-4 col-1 d-flex align-items-center">
+                                <a class="sidebar-toggle-btn d-none d-md-inline-flex" data-widget="pushmenu" href="#"
+                                    role="button" aria-label="Toggle sidebar">
+                                    <img src="/assets/admin/img/menu-left-alt.svg" alt="Toggle sidebar" />
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-md tableaction useraction-dropdown dropdown-menu-right"
-                                    style="left: inherit; right: 0px;">
-                                    <ul>
-                                        <li>
-                                            <form action="{{ route('logout') }}" method="post" class="m-0">
-                                                @csrf
-                                                <button class="dropdown-item" type="submit">Logout</button>
-                                            </form>
-                                        </li>
-                                    </ul>
+                                <a class="d-block d-md-none" data-widget="pushmenu" href="#" role="button"
+                                    aria-label="Toggle sidebar"><img src="/assets/admin/img/menu-left-alt.svg"
+                                        alt="Toggle sidebar" /></a>
+                                <a class="d-block d-sm-none d-md-block" href="#" role="button"><img
+                                        src="/assets/admin/img/dms-header.png" alt="Logo" /></a>
+                            </div>
+                            <div class="col-md-7 col-11 user-profile offset-md-1">
+
+                                <div class="float-right dropdown userData">
+                                    <a data-toggle="dropdown" href="#" aria-expanded="true">
+
+                                        @php $user = auth()->user(); @endphp
+                                        <p>User
+                                            @if($user?->isDepartmentHead())
+                                                <span>HOD</span>
+                                            @elseif($user?->isAdmin())
+                                                <span>Admin</span>
+                                            @elseif($user?->isOperator())
+                                                <span>Operator</span>
+                                            @else
+                                                <span>{{ ucfirst(str_replace('_', ' ', $user?->role?->name ?? 'User')) }}</span>
+                                            @endif
+                                        </p>
+
+                                        <img src="/assets/admin/img/user.jpeg" class="img-circle mr-1" width="36" /> <img
+                                            src="/assets/admin/img/dot.svg" class="float-none" />
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-md tableaction useraction-dropdown dropdown-menu-right"
+                                        style="left: inherit; right: 0px;">
+                                        <ul>
+                                            <li>
+                                                <form action="{{ route('logout') }}" method="post" class="m-0">
+                                                    @csrf
+                                                    <button class="dropdown-item" type="submit">Logout</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
+
                             </div>
 
                         </div>
-
-                    </div>
                     @endauth
 
 
@@ -350,7 +351,10 @@
 
                 </div>
             </div>
-            @yield('content')
+            <div class="container-fluid pl-2 pr-3 py-3">
+                @yield('content')
+            </div>
+
 
         </div>
 

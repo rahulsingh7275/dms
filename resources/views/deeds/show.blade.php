@@ -13,43 +13,32 @@
 
 <div class="card p-4 mb-4">
     <dl class="row">
-        <dt class="col-sm-3">Presentation Year</dt>
-        <dd class="col-sm-9">{{ $deed->presentation_year }}</dd>
+        <dt class="col-sm-2">Presentation Year</dt>
+        <dd class="col-sm-2">{{ $deed->presentation_year }}</dd>
 
-        <dt class="col-sm-3">Deed Number</dt>
-        <dd class="col-sm-9">{{ $deed->deed_number }}</dd>
+        <dt class="col-sm-2">Deed Number</dt>
+        <dd class="col-sm-2">{{ $deed->deed_number }}</dd>
 
-        <dt class="col-sm-3">Party Name</dt>
-        <dd class="col-sm-9">{{ $deed->party_name }}</dd>
+        <dt class="col-sm-2">Party Name</dt>
+        <dd class="col-sm-2">{{ $deed->party_name }}</dd>
 
-        <dt class="col-sm-3">Property Details</dt>
-        <dd class="col-sm-9">{{ $deed->property_details }}</dd>
+        <dt class="col-sm-2">Property Details</dt>
+        <dd class="col-sm-2">{{ $deed->property_details }}</dd>
 
-        <dt class="col-sm-3">Village</dt>
-        <dd class="col-sm-9">{{ $deed->village }}</dd>
+        <dt class="col-sm-2">Village</dt>
+        <dd class="col-sm-2">{{ $deed->village }}</dd>
 
-        <dt class="col-sm-3">Area</dt>
-        <dd class="col-sm-9">{{ $deed->area }}</dd>
+        <dt class="col-sm-2">Area</dt>
+        <dd class="col-sm-2">{{ $deed->area }}</dd>
 
-        <dt class="col-sm-3">Registration Date</dt>
-        <dd class="col-sm-9">{{ optional($deed->registration_date)->format('Y-m-d') ?? '-' }}</dd>
+        <dt class="col-sm-2">Registration Date</dt>
+        <dd class="col-sm-2">{{ optional($deed->registration_date)->format('Y-m-d') ?? '-' }}</dd>
 
-        <dt class="col-sm-3">Status</dt>
-        <dd class="col-sm-9">{{ ucfirst($deed->status) }}</dd>
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-2">{{ ucfirst($deed->status) }}</dd>
 
-        <dt class="col-sm-3">Scanned Document</dt>
-        <dd class="col-sm-9">
-            @if($deed->scannedDocuments->isNotEmpty())
-                @php $doc = $deed->scannedDocuments->last(); @endphp
-                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary me-2">View PDF</a>
-                <a href="{{ route('deeds.download', $deed) }}" class="btn btn-sm btn-outline-success">Download</a>
-            @else
-                -
-            @endif
-        </dd>
-
-        <dt class="col-sm-3">Metadata</dt>
-        <dd class="col-sm-9">
+        <dt class="col-sm-2">Metadata</dt>
+        <dd class="col-sm-2">
             @if($deed->metadata)
                 {{ ucfirst($deed->metadata->status) }}
             @else
@@ -57,13 +46,24 @@
             @endif
         </dd>
 
-        <dt class="col-sm-3">Latest Remark</dt>
-        <dd class="col-sm-9">
+        <dt class="col-sm-2">Latest Remark</dt>
+        <dd class="col-sm-2">
             @php $latestDeedVerification = $deed->deedVerifications->sortByDesc('verified_at')->first(); @endphp
             @if($latestDeedVerification && $latestDeedVerification->remarks)
                 <small class="text-muted">{{ $latestDeedVerification->remarks }}</small>
             @else
                 <small class="text-muted">-</small>
+            @endif
+        </dd>
+        
+        <dt class="col-sm-2">Scanned Document</dt>
+        <dd class="col-sm-4 d-flex align-items-center gap-2">
+            @if($deed->scannedDocuments->isNotEmpty())
+                @php $doc = $deed->scannedDocuments->last(); @endphp
+                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn-sm btn-info mx-2">View PDF</a>
+                <a href="{{ route('deeds.download', $deed) }}" class="btn-sm btn-success">Download</a>
+            @else
+                -
             @endif
         </dd>
     </dl>
@@ -85,7 +85,7 @@
             </form>
             
             <!-- Reject Button (with modal) -->
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal" title="Reject with comment">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal" title="Reject with comment">
                 <i class="fas fa-times"></i> Reject
             </button>
             
@@ -108,7 +108,7 @@
                     <h5 class="modal-title" id="rejectModalLabel">
                         Reject Deed #{{ $deed->deed_number }}
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="POST" action="{{ route('indexes.deeds.status.update', [$index, $deed]) }}">
                     @csrf
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-danger">Confirm Rejection</button>
                     </div>
                 </form>

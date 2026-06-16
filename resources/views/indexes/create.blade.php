@@ -9,7 +9,7 @@
         @csrf
         <div class="row g-3">
             <div class="col-md-4">
-                <span style="color: black;">State:</span>
+                <label class="form-label">State</label>
                 <select name="state_id" id="state_id" style="border: 1px solid #c0c0c0;" class="form-control" required>
                     <option value="">Select State</option>
                     @foreach($states as $state)
@@ -18,7 +18,7 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <span style="color: black;">District:</span>
+                <label class="form-label">District</label>
                 <select name="district_id" id="district_id" style="border: 1px solid #c0c0c0;" class="form-control" required>
                     <option value="">Select District</option>
                     @foreach($districts as $district)
@@ -27,7 +27,7 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <span style="color: black;">Registration Office:</span>
+                <label class="form-label">Registration Office</label>
                 <select name="vault_registration_office_id" id="vault_registration_office_id" style="border: 1px solid #c0c0c0;" class="form-control" required>
                     <option value="">Select Office</option>
                     @foreach($offices as $office)

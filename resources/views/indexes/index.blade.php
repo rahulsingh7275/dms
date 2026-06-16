@@ -26,8 +26,8 @@
                     <a href="{{ route('indexes.create') }}" class="btn-md btn-add"><i class="iconly-boldPlus"></i> Add Index</a>
                 @endif
                 <a href="#" class="btn-md btn-warning" data-toggle="modal" data-target="#filterModal"><i class="iconly-boldFilter-2"></i> Filter</a>
+                <a href="{{ route('indexes.index') }}" class="btn-md btn-dark ms-2"><i class="fa fa-undo"></i> Clear</a>
                 {{-- <a href="#" class="btn-md btn-dark"><i class="iconly-boldSearch"></i> Search</a> --}}
-                {{-- <a href="{{ route('indexes.index') }}" class="btn-md btn-dark"><i class="fa fa-undo"></i> Reset</a> --}}
                 {{-- <a href="javascript:void(0);" class="text-dark" onclick="event.preventDefault();"><img src="/assets/admin/img/export.svg"> Export Indexes</a> --}}
             </div>
         </div>
