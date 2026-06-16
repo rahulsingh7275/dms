@@ -13,6 +13,7 @@ use App\Http\Controllers\VaultRegistrationOfficeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PropertyTaxController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,6 +35,25 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('users', UserController::class)->except(['show']);
     Route::resource('instruments', InstrumentController::class)->except(['show']);
     Route::resource('instrument-types', InstrumentTypeController::class)->except(['show']);
+
+// Property Tax Bill Routes
+Route::get('/property-tax/upload',
+            [PropertyTaxController::class,'uploadForm'])
+            ->name('property-tax.upload');
+
+        Route::post('/property-tax/import',
+            [PropertyTaxController::class,'import'])
+            ->name('property-tax.import');
+
+        Route::get('/property-tax/bills',
+            [PropertyTaxController::class,'bills'])
+            ->name('property-tax.list');
+
+        Route::get('/property-tax/bill/{id}',
+            [PropertyTaxController::class,'show'])
+            ->name('property-tax.bill.view');
+
+
 });
 
 Route::resource('indexes', IndexController::class)->except(['show']);
@@ -68,3 +88,5 @@ Route::get('verifications/metadata', [VerificationController::class, 'metadataVe
 Route::post('verifications/metadata/{metadata}', [VerificationController::class, 'verifyMetadata'])->name('verifications.metadata.verify');
 Route::get('verifications/qc', [VerificationController::class, 'qcVerifications'])->name('verifications.qc');
 Route::post('verifications/qc/{index}', [VerificationController::class, 'verifyQc'])->name('verifications.qc.verify');
+
+

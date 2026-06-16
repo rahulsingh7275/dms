@@ -153,6 +153,27 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="mdi mdi-account-group"></i>
+                                <p>Property Taax<i class="fa fa-angle-left right"></i></p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: none;">
+                                
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.property-tax.upload') }}" class="nav-link">
+                                        <i class="mdi mdi-book-open-page-variant"></i>
+                                        <p>Upload Property Tax Data</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                     <a href="{{ route('admin.property-tax.list') }}" class="nav-link">
+                                        <i class="mdi mdi-shape-outline"></i>
+                                        <p>Property Tax Bills</p>
+                                    </a> 
+                                </li> 
+                            </ul>
+                        </li>
                         @endif
 
                     </ul>
