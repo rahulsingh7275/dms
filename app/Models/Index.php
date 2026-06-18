@@ -27,6 +27,7 @@ class Index extends Model
         'volume_number',
         'is_volume_forwarded',
         'status',
+        'final_approve',
         'status_comment',
         'locked',
         'created_by',
@@ -35,6 +36,7 @@ class Index extends Model
     protected $casts = [
         'is_volume_forwarded' => 'boolean',
         'locked' => 'boolean',
+        'final_approve' => 'boolean',
     ];
 
     public function state(): BelongsTo

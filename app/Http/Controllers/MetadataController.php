@@ -137,42 +137,50 @@ class MetadataController extends Controller
         if ($redirect = $this->requireAuth()) {
             return $redirect;
         }
+        
+        try {
+            $data = $request->validate([
+                'presentation_year' => ['required', 'string', 'max:20'],
+                'deed_number' => ['required', 'string', 'max:100'],
+                'party_name' => ['nullable', 'string', 'max:255'],
+                'party_type' => ['nullable', 'in:executant,claimant'],
+                'relation_name' => ['nullable', 'string', 'max:255'],
+                'district_id' => ['nullable', 'exists:districts,id'],
+                'vault_registration_office_id' => [
+                    'nullable',
+                    Rule::exists('vault_registration_offices', 'id')->where(function ($query) use ($request) {
+                        $districtId = $request->input('district_id');
 
-        $data = $request->validate([
-            'presentation_year' => ['required', 'string', 'max:20'],
-            'deed_number' => ['required', 'string', 'max:100'],
-            'party_name' => ['nullable', 'string', 'max:255'],
-            'party_type' => ['nullable', 'in:executant,claimant'],
-            'relation_name' => ['nullable', 'string', 'max:255'],
-            'district_id' => ['nullable', 'exists:districts,id'],
-            'vault_registration_office_id' => [
-                'nullable',
-                Rule::exists('vault_registration_offices', 'id')->where(function ($query) use ($request) {
-                    $districtId = $request->input('district_id');
+                        if ($districtId !== null && $districtId !== '') {
+                            $query->where('district_id', $districtId);
+                        }
+                    }),
+                ],
+                'circle' => ['nullable', 'string', 'max:255'],
+                'property_details' => ['nullable', 'string'],
+                'village' => ['nullable', 'string', 'max:255'],
+                'khata_no' => ['nullable', 'string', 'max:100'],
+                'khasra_no' => ['nullable', 'string', 'max:100'],
+                'area' => ['nullable', 'string', 'max:100'],
+                'registration_date' => ['required', 'date'],
+                'presection_date' => ['required', 'date'],
+                'instrument_type_id' => ['required', 'exists:instruments,id'],
+                'instrument_sub_type_id' => [
+                    'required',
+                    Rule::exists('instrument_types', 'id')->where(function ($query) use ($request) {
+                        $query->where('instrument_id', $request->input('instrument_type_id'));
+                    }),
+                ],
+                'page_no_from' => ['required', 'integer', 'min:1'],
+                'page_no_to' => ['required', 'integer', 'min:1', 'gte:page_no_from'],
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // dd($e->validator->errors()->all());
+            dd($request->all(), $e->validator->errors()->all());
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
 
-                    if ($districtId !== null && $districtId !== '') {
-                        $query->where('district_id', $districtId);
-                    }
-                }),
-            ],
-            'circle' => ['nullable', 'string', 'max:255'],
-            'property_details' => ['nullable', 'string'],
-            'village' => ['nullable', 'string', 'max:255'],
-            'khata_no' => ['nullable', 'string', 'max:100'],
-            'khasra_no' => ['nullable', 'string', 'max:100'],
-            'area' => ['nullable', 'string', 'max:100'],
-            'registration_date' => ['required', 'date'],
-            'presection_date' => ['required', 'date'],
-            'instrument_type_id' => ['required', 'exists:instruments,id'],
-            'instrument_sub_type_id' => [
-                'required',
-                Rule::exists('instrument_types', 'id')->where(function ($query) use ($request) {
-                    $query->where('instrument_id', $request->input('instrument_type_id'));
-                }),
-            ],
-            'page_no_from' => ['required', 'integer', 'min:1'],
-            'page_no_to' => ['required', 'integer', 'min:1', 'gte:page_no_from'],
-        ]);
+
 
         $deed->metadata()->create(array_merge($data, [
             'created_by' => auth()->id(),
@@ -284,7 +292,7 @@ class MetadataController extends Controller
         }
 
         $user = auth()->user();
-        if (! $user || ! $user->isChecker()) {
+        if (!$user || !$user->isChecker()) {
             return redirect()->route('deeds.metadata.show', [$deed, $metadata])->with('error', 'You do not have permission to change metadata status.');
         }
 

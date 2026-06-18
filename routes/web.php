@@ -7,6 +7,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\InstrumentController;
 use App\Http\Controllers\InstrumentTypeController;
 use App\Http\Controllers\MetadataController;
+use App\Http\Controllers\MetadataVolumeController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\VaultRegistrationOfficeController;
@@ -54,6 +55,9 @@ Route::get('deeds/{deed}/download', [DeedController::class, 'download'])->name('
 Route::post('deeds/{deed}/scanned-copy', [DeedController::class, 'storeScannedCopy'])->name('deeds.scanned-copy.store');
 
 Route::get('metadata', [MetadataController::class, 'index'])->name('metadata.index');
+Route::get('metadata/volumes', [MetadataVolumeController::class, 'index'])->name('metadata.volumes.index');
+Route::get('metadata/volumes/{index}/process', [MetadataVolumeController::class, 'process'])->name('metadata.volumes.process');
+Route::post('metadata/volumes/{index}/submit', [MetadataVolumeController::class, 'submit'])->name('metadata.volumes.submit');
 Route::get('deeds/{deed}/metadata/create', [MetadataController::class, 'create'])->name('deeds.metadata.create');
 Route::post('deeds/{deed}/metadata', [MetadataController::class, 'store'])->name('deeds.metadata.store');
 Route::get('deeds/{deed}/metadata/{metadata}', [MetadataController::class, 'edit'])->name('deeds.metadata.edit');

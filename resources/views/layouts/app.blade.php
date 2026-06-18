@@ -104,6 +104,12 @@
                                     <p>Metadata</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('metadata.volumes.index') }}" class="nav-link">
+                                    <i class="mdi mdi-folder-multiple"></i>
+                                    <p>Metadata Volumes</p>
+                                </a>
+                            </li>
                             @if(auth()->user()->isAdmin())
                                 <li class="nav-item has-treeview">
                                     <a href="#" class="nav-link">
@@ -351,6 +357,18 @@
 
                 </div>
             </div>
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-box">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="text-dark close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <div class="container-fluid pl-2 pr-3 py-3">
                 @if ($message = Session::get('status'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-box">

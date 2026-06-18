@@ -100,22 +100,17 @@
                                 <div class="tab-content" id="metadataTabsContent">
                                     <div class="tab-pane fade show active" id="indexTab" role="tabpanel" aria-labelledby="index-tab">
                                         <div class="row g-3">
+                                            
                                             <div class="col-md-6">
-                                                <label class="form-label">Presentation Year</label>
-                                                <input type="text" name="presentation_year" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $prefPresentationYear }}" required {{ $prefPresentationYear !== '' ? 'readonly' : '' }}>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Deed Number</label>
-                                                <input type="text" name="deed_number" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $prefDeedNumber }}" required {{ $prefDeedNumber !== '' ? 'readonly' : '' }}>
-                                            </div>
-                                            <div class="col-md-6">
+                                                <input type="hidden" name="presentation_year" value="{{ $prefPresentationYear }}">
+                                                <input type="hidden" name="deed_number" value="{{ $prefDeedNumber }}">
                                                 <label class="form-label">Presentation Date</label>
                                                 <input type="date" name="presection_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $prefPresectionDate }}" required {{ $prefPresectionDate !== '' ? 'readonly' : '' }}
                                                 max="{{ now()->format('Y-m-d') }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Registration Date</label>
-                                                <input type="date" name="registration_date" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $prefRegistrationDate }}" required {{ $prefRegistrationDate !== '' ? 'readonly' : '' }} max="{{ now()->format('Y-m-d') }}">
+                                                <input type="date" name="registration_date" style="border: 1px solid #c0c0c0;" class="form-control" required max="{{ now()->format('Y-m-d') }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Instrument Type</label>
@@ -178,7 +173,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Name</label>
-                                                <input type="text" name="party_name" style="border: 1px solid #c0c0c0;" class="form-control" value="{{ $prefPartyName }}" {{ $prefPartyName !== '' ? 'readonly' : '' }}>
+                                                <input type="text" name="party_name" style="border: 1px solid #c0c0c0;" class="form-control" >
                                             </div>
                                             <div class="col-md-12">
                                                 <label class="form-label">Relation Name</label>

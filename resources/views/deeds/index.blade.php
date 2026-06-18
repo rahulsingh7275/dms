@@ -176,7 +176,7 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-md tableaction dropdown-menu-right">
                                                 <ul class="mb-0">
-                                                    @if($deed->scannedDocuments->isNotEmpty())
+                                                    @if($deed->scannedDocuments->isNotEmpty() && !$user->isDepartmentHead())
                                                         @php $doc = $deed->scannedDocuments->last(); @endphp
                                                         <li><a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank">View PDF</a></li>
                                                         <li><a href="{{ route('deeds.download', $deed) }}">Download</a></li>
@@ -190,9 +190,9 @@
 
                                                     @if($user && $user->isChecker())
                                                         <li><a href="{{ route('indexes.deeds.show', [$index, $deed]) }}">View</a></li>
-                                                    @elseif($deed->status === 'approved')
+                                                    @elseif($deed->status === 'approved' && !$user->isDepartmentHead())
                                                         <li><a href="{{ route('indexes.deeds.show', [$index, $deed]) }}">View</a></li>
-                                                    @else
+                                                    @elseif($deed->status !== 'approved' && $user && ($user->isOperator() || $user->isAdmin()))
                                                         <li><a href="{{ route('indexes.deeds.edit', [$index, $deed]) }}">Edit</a></li>
                                                         <li>
                                                             <form method="POST" action="{{ route('indexes.deeds.destroy', [$index, $deed]) }}" class="m-0" onsubmit="return confirm('Delete this deed?');">
